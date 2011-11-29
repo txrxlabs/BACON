@@ -1,0 +1,1 @@
+"./telitcomm.obj" "./main.obj" -l"libc.a" "../lnk_msp430fg4616.cmd" 
