@@ -1,1 +1,1 @@
-"../main.c" "../telitcomm.c" 
+"../defaultprocessor.c" "../main.c" "../mma8451q.c" "../telitcomm.c" "../txrxlpfi2c.c" 

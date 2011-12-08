@@ -8,8 +8,11 @@ CG_TOOL_ROOT := C:/ti/ccsv5/tools/compiler/msp430
 
 ORDERED_OBJS += \
 $(GEN_CMDS__FLAG) \
+"./txrxlpfi2c.obj" \
 "./telitcomm.obj" \
+"./mma8451q.obj" \
 "./main.obj" \
+"./defaultprocessor.obj" \
 -l"libc.a" \
 "../lnk_msp430fg4616.cmd" \
 
@@ -123,8 +126,8 @@ TXRXLPF1.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(MSP430_EXECUTABLE_OUTPUTS__QUOTED) "TXRXLPF1.out"
-	-$(RM) "main.pp" "telitcomm.pp" 
-	-$(RM) "main.obj" "telitcomm.obj" 
+	-$(RM) "defaultprocessor.pp" "main.pp" "mma8451q.pp" "telitcomm.pp" "txrxlpfi2c.pp" 
+	-$(RM) "defaultprocessor.obj" "main.obj" "mma8451q.obj" "telitcomm.obj" "txrxlpfi2c.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

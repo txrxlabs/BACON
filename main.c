@@ -3,107 +3,111 @@
 
 //#include <msp430g2211.h>
 #include <msp430fg4619.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include "txrxlpf.h"
 #include "telitcomm.h"
 
 
 // unsigned char seconds_counter=0; /* used for lpm1 */
-int two_second_intervals=0;
-int minutes_counter=0;
+volatile unsigned int second_intervals=0;
+volatile unsigned char timermode = 0;
+volatile unsigned int timeout = 0;
+volatile unsigned int timeout_intervals;
+//
+unsigned char dataBuffer[TRANSMIT_BUFFER_SIZE];
+unsigned int dataPntr  = 0;
+irqVector vectorMap[2][8];
 
+extern procFcn procMap[];
 control_state_t control_state=STATE_INITIAL;
 
-fifo_queue_t datastore;
-fifo_queue_t transmit_log;
 
-unsigned int tx_byte;
+void enableSensors() {
 
-/* for temp measurement stub */
-long tempAverage;
-
-// For debug purposes
-void show_tick(void) {
-	P1OUT ^= RLY1;
 }
 
-void tick(void) {
-	two_second_intervals++;
-	if (two_second_intervals == MINUTE_LENGTH) {
-		minutes_counter++;
-		two_second_intervals=0;
-	}
-
-	if (minutes_counter == PULSE_LENGTH) {
-		show_tick();
-		process_state();
-		minutes_counter=0;
-	}
+void attachInterrupt(irqVector vector, unsigned char port, unsigned char bit, unsigned char edge) {
+	unsigned char offset = port==1?8:0;
+	char *pdir = (char*)(0x022 + offset);
+	char *psel = (char*)(0x026 + offset);
+	char *pie  = (char*)(0x025 + offset);
+	char *pies = (char*)(0x024 + offset);
+	*pdir &= ~(0x01 << bit);
+	*psel &= ~(0x01 << bit);
+	if(!edge) *pies &= ~(0x01 << bit);
+	else *pies |= (0x01 << bit);
+	*pie |= (0x01 << bit);
+	vectorMap[port][bit] = vector;
 }
-
-/*
-// Half second timer for LPM1
-void tick(void) {
-	static char half_seconds=0;
-	if (++half_seconds == 1) {
-		seconds_counter++;
+void detachInterrupt(unsigned char port, unsigned char bit) {
+	unsigned char offset = port==1?8:0;
+	char *pie = (char*)(0x025 + offset);
+	*pie &= ~(0x01 << bit);
+	vectorMap[port][bit] = 0;
+}
+unsigned char* getBuffer(unsigned int length) {
+	if(length >TRANSMIT_BUFFER_SIZE) return 0;
+	if(dataPntr+length <= TRANSMIT_BUFFER_SIZE) {
+		unsigned char *retptr = dataBuffer+dataPntr;
+		dataPntr+=length;
+		return retptr;
 	} else {
-		half_seconds=0;
-	}
-	if (seconds_counter == MINUTE_LENGTH) {
-		minutes_counter++;
-		seconds_counter=0;
-	}
-	if (minutes_counter == PULSE_LENGTH) {
-		show_tick();
-		process_state();
-		minutes_counter=0;
+		flushTransmission();
+		return getBuffer(length);
 	}
 }
-*/
 
-void measure_temperature(void) {
-	//char i;
-    /* Moving average filter out of 8 values to somewhat stabilize sampled ADC */
-    //tempAverage = 0;
-	//for (i = 0; i < 8; i++)
-    //	tempAverage += ADC10MEM;
-    tempAverage = 15;                      // Divide by 8 to get average
-
-    store_data(&datastore, (unsigned char)THERMOMETER_ID, tempAverage);
-}
-
-// Function Transmits Character from TXByte
-void Transmit(void) {
-	entry_t item;
-	while(not_empty(&datastore)) {
-		retrieve_data(&datastore, &item);
-
-		// This is where you'd do the transmitting
-		// store_data(&transmit_log, item.instrument_id, item.data);
-		IE2 &= ~BTIE;
-		 transComms();
-		 IE2 |= BTIE;
+unsigned int releaseBuffer(unsigned int length) {
+	if (length > dataPntr) {
+		dataPntr = 0;
+		return 1;
 	}
+	dataPntr -= length;
+	return 0;
 }
+void logError() {
+	unsigned char *buf = getBuffer(3);
+	*(buf++) = 0xFF;
+	*(buf++) = 0x00;
+	*(buf++) = 0x00;
+}
+
+void flushTransmission() {
+	if(gprsSend(dataBuffer, dataPntr)) {
+		dataPntr=0;
+		logError();
+	} else {
+		dataPntr=0;
+	}
+	return ;
+}
+
+void closeTransmission() {
+flushTransmission();
+gprsClose();
+}
+
+
+
+
+
+void executeProcs(void) {
+	unsigned char proc =0;
+	proc_struct_t proc_struct = {0x00};
+	while(procMap[proc]!=0) {
+		procMap[proc](proc_struct);
+		proc++;
+	}
+	closeTransmission();
+}
+
+
 
 void configure_timer(void) {
-	//BCSCTL1 = CALBC1_1MHZ;    // Set DCO to calibrated 1 MHz.
-	//DCOCTL = CALDCO_1MHZ;
-
-	/*
-	// Section for LPM1
-	TACCR0 = 62500 - 1;    // A period of 62,500 cycles is 0 to 62,499.
-	TACCTL0 = CCIE;        // Enable interrupts for CCR0.
-	TACTL = TASSEL_2 + ID_3 + MC_1 + TACLR;  // SMCLK, div 8, up mode,
-	                                         // clear timer
-	*/
-
-	// Section for LPM3
 	IE2 |= BTIE;                              // Enable BT interrupt
 	BTCTL = BTDIV+BTIP2+BTIP1+BTIP0;          // 2s Interrupt
 }
+
+
 
 void initialize(void) {
 	volatile unsigned int i;
@@ -117,21 +121,8 @@ void initialize(void) {
 		}
 		while ((IFG1 & OFIFG));                   // OSCFault flag still set?
 
-		initComms();
-			P1OUT = 0;
-	P1DIR = RLY1;    // P1.6 out to relay (LED)
-
 	configure_timer();
-
-	initialize_fifo(&datastore);
-	initialize_fifo(&transmit_log);
-
-	// Initialize Instruments
-
-    // ADC10CTL0 |= ENC + ADC10SC;             // Sampling and conversion start, internal thermometer
-
-	//_enable_interrupt();
-	_BIS_SR(LPM3_bits + GIE);	// Enter LPM3 and enable interrupts
+	_EINT();
 }
 
 void process_state(void)
@@ -142,84 +133,88 @@ void process_state(void)
         	control_state = STATE_NORMAL;
         	break;
         case STATE_NORMAL:
-        	measure_temperature();
-        	Transmit();
-            break;
+        	//check battery
+        	// process data calls
+        	executeProcs();
+        	break;
         case STATE_BATTERY_LOW:
 
             break;
     }
 }
 
-void initialize_fifo(fifo_queue_t *fifo) {
-	unsigned char i;
-	fifo->front = 0x00;
-	fifo->rear = 0x00;
-	fifo->size = 0x00;
-	for(i = 0; i < DATASTORE_MAX_SIZE; i++) {
-		((fifo->buffer)[i]).instrument_id = 0x00;
-		((fifo->buffer)[i]).data = 0x0000;
-	}
+void setTimeout(unsigned int time) {
+	timeout = time;
+	timeout_intervals=0;
+	timermode |= 0x02;
+	IE2 |= BTIE;
+}
+void clearTimeout() {
+	timermode &= 0xFD;
+	if(!timermode) IE2 &= ~BTIE;
 }
 
-void store_data(fifo_queue_t *fifo, unsigned char identifier, long new_data) {
-	((fifo->buffer)[fifo->front]).instrument_id = identifier;
-	((fifo->buffer)[fifo->front]).data = new_data;
-	(fifo->front) += 1;
-	if (fifo->front >= DATASTORE_MAX_SIZE) {
-		fifo->front = 0;
-	}
-	if ((fifo->size) < DATASTORE_MAX_SIZE) {
-		(fifo->size)++;
-	}
-	else if ((fifo->size) >= DATASTORE_MAX_SIZE) {
-		(fifo->rear)++;
-		if (fifo->rear >= DATASTORE_MAX_SIZE) {
-			fifo->rear = 0;
-		}
-	}
+void enablePeriodic() {
+	second_intervals = 0;
+	timermode |= 0x01;
+	IE2 |= BTIE;
+
 }
 
-unsigned char is_empty(fifo_queue_t *fifo) {
-	return (fifo->size) == 0;
-}
-
-unsigned char not_empty(fifo_queue_t *fifo) {
-	return (fifo->size) > 0;
-}
-
-void retrieve_data(fifo_queue_t *fifo, entry_t *entry) {
-	if (fifo->size > 0) {
-		entry->instrument_id = ((fifo->buffer)[fifo->rear]).instrument_id;
-		entry->data = ((fifo->buffer)[fifo->rear]).data;
-		(fifo->rear)++;
-		if (fifo->rear >= DATASTORE_MAX_SIZE) {
-			fifo->rear = 0;
-		}
-		(fifo->size)--;
-	}
+void disablePeriodic() {
+	timermode &= 0xFE;
+	if(!timermode) IE2 &= ~BTIE;
 }
 
 void main(void) {
 	initialize();
-	for(;;) {
+	while(1) {
+		disablePeriodic();
+		process_state();
+		enablePeriodic();
+		__bis_SR_register(LPM3_bits + GIE);
 	}
 } // main
 
 
-// Interrupt Service Routines
-
-/*
-//LPM1 service routine
-#pragma vector = TIMERA0_VECTOR
-__interrupt void CCR0_ISR(void) {
-	tick();
-} // CCR0_ISR
-*/
-
+//should probably set the
 // LPM3 Timer interrupt
 #pragma vector=BASICTIMER_VECTOR
 __interrupt void basic_timer(void) {
-	tick();
+	second_intervals++;
+	timeout_intervals++;
+		if ((timermode & 0x01) && (second_intervals == PULSE_LENGTH)) {
+			control_state = STATE_NORMAL;
+			second_intervals=0;
+			__bic_SR_register_on_exit(LPM3_bits);
+		}
+		if ((timermode & 0x02) && (timeout_intervals == timeout)) {
+					timeout_intervals=0;
+					timermode &= 0xFD;
+					__bic_SR_register_on_exit(LPM3_bits);
+				}
+
+
 }
+#pragma vector=PORT1_VECTOR
+__interrupt void Port_1(void) {
+	unsigned char ipos = 0;
+	for(;ipos<8;ipos++) {
+	if(P1IFG & 0x01<< ipos) {
+		P1IFG &= ~0x01<<ipos;
+		__bic_SR_register_on_exit(vectorMap[0][ipos]());
+	}
+	}
+}
+#pragma vector=PORT2_VECTOR
+__interrupt void Port_2(void) {
+	unsigned char ipos = 0;
+		for(;ipos<8;ipos++) {
+		if(P2IFG & 0x01<< ipos) {
+			P2IFG &= ~0x01<<ipos;
+			__bic_SR_register_on_exit(vectorMap[1][ipos]());
+		}
+		}
+}
+
 

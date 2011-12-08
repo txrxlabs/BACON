@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v4.0.0                      
 ******************************************************************************
->> Linked Mon Nov 28 16:39:41 2011
+>> Linked Wed Dec 07 22:06:26 2011
 
 OUTPUT FILE NAME:   <TXRXLPF1.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 00002272
+ENTRY POINT SYMBOL: "_c_int00"  address: 000021be
 
 
 MEMORY CONFIGURATION
@@ -16,8 +16,8 @@ MEMORY CONFIGURATION
   PERIPHERALS_16BIT     00000100   00000100  00000000  00000100  RWIX
   INFOB                 00001000   00000080  00000000  00000080  RWIX
   INFOA                 00001080   00000080  00000000  00000080  RWIX
-  RAM                   00001100   00001000  00000244  00000dbc  RWIX
-  FLASH                 00002100   0000dec0  00000f0e  0000cfb2  RWIX
+  RAM                   00001100   00001000  000001e0  00000e20  RWIX
+  FLASH                 00002100   0000dec0  00000615  0000d8ab  RWIX
   INT00                 0000ffc0   00000002  00000000  00000002  RWIX
   INT01                 0000ffc2   00000002  00000000  00000002  RWIX
   INT02                 0000ffc4   00000002  00000000  00000002  RWIX
@@ -35,13 +35,13 @@ MEMORY CONFIGURATION
   INT14                 0000ffdc   00000002  00000000  00000002  RWIX
   INT15                 0000ffde   00000002  00000000  00000002  RWIX
   INT16                 0000ffe0   00000002  00000002  00000000  RWIX
-  INT17                 0000ffe2   00000002  00000000  00000002  RWIX
+  INT17                 0000ffe2   00000002  00000002  00000000  RWIX
   INT18                 0000ffe4   00000002  00000000  00000002  RWIX
   INT19                 0000ffe6   00000002  00000000  00000002  RWIX
-  INT20                 0000ffe8   00000002  00000000  00000002  RWIX
+  INT20                 0000ffe8   00000002  00000002  00000000  RWIX
   INT21                 0000ffea   00000002  00000000  00000002  RWIX
   INT22                 0000ffec   00000002  00000000  00000002  RWIX
-  INT23                 0000ffee   00000002  00000002  00000000  RWIX
+  INT23                 0000ffee   00000002  00000000  00000002  RWIX
   INT24                 0000fff0   00000002  00000000  00000002  RWIX
   INT25                 0000fff2   00000002  00000002  00000000  RWIX
   INT26                 0000fff4   00000002  00000000  00000002  RWIX
@@ -60,97 +60,84 @@ section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
 .pinit     0    00002100    00000000     UNINITIALIZED
 
-.bss       0    00001100    000001a4     UNINITIALIZED
-                  00001100    00000154     telitcomm.obj (.bss)
-                  00001254    00000038     main.obj (.bss)
-                  0000128c    00000008     rts430x.lib : _lock.obj (.bss)
-                  00001294    00000008                 : boot.obj (.bss)
-                  0000129c    00000008                 : memory.obj (.bss)
-
-.sysmem    0    000012a4    00000050     UNINITIALIZED
-                  000012a4    00000004     rts430x.lib : memory.obj (.sysmem)
-                  000012a8    0000004c     --HOLE--
+.bss       0    00001100    00000190     UNINITIALIZED
+                  00001100    00000118     main.obj (.bss)
+                  00001218    00000054     telitcomm.obj (.bss)
+                  0000126c    0000000c     mma8451q.obj (.bss)
+                  00001278    00000008     defaultprocessor.obj (.bss)
+                  00001280    00000008     rts430x.lib : _lock.obj (.bss)
+                  00001288    00000008                 : boot.obj (.bss)
 
 .stack     0    000020b0    00000050     UNINITIALIZED
                   000020b0    00000002     rts430x.lib : boot.obj (.stack)
                   000020b2    0000004e     --HOLE--
 
-.cinit     0    00002100    00000140     
-                  00002100    00000126     telitcomm.obj (.cinit)
-                  00002226    00000012     main.obj (.cinit)
-                  00002238    00000006     rts430x.lib : memory.obj (.cinit)
-                  0000223e    00000002     --HOLE-- [fill = 0]
-
 .text:_isr 
-*          0    00002240    00000074     
-                  00002240    00000032     telitcomm.obj (.text:_isr:USCIA0RX_ISR)
-                  00002272    0000002a     rts430x.lib : boot.obj (.text:_isr:_c_int00_noexit)
-                  0000229c    0000000e     telitcomm.obj (.text:_isr:ADC12ISR)
-                  000022aa    0000000a     main.obj (.text:_isr:basic_timer)
+*          0    00002100    00000108     
+                  00002100    00000042     main.obj (.text:_isr:basic_timer)
+                  00002142    0000003e     main.obj (.text:_isr:Port_1)
+                  00002180    0000003e     main.obj (.text:_isr:Port_2)
+                  000021be    0000002a     rts430x.lib : boot.obj (.text:_isr:_c_int00_noexit)
+                  000021e8    00000020     telitcomm.obj (.text:_isr:USCIA0RX_ISR)
 
-.text      0    000022b4    00000c0c     
-                  000022b4    0000015e     telitcomm.obj (.text:transComms)
-                  00002412    0000010a     rts430x.lib : _printfi_min.obj (.text:_setfield)
-                  0000251c    000000c0                 : _printfi_min.obj (.text:_printfi_minimal)
-                  000025dc    000000a6                 : memory.obj (.text:malloc)
-                  00002682    00000080                 : memory.obj (.text:free)
-                  00002702    0000006c     telitcomm.obj (.text:performPost)
-                  0000276e    00000068     main.obj (.text:store_data)
-                  000027d6    0000005a     telitcomm.obj (.text:ackSGACT)
-                  00002830    00000058     telitcomm.obj (.text:initComms)
-                  00002888    00000058     main.obj (.text:initialize)
-                  000028e0    00000058     rts430x.lib : div32u.obj (.text)
-                  00002938    00000052                 : _printfi_min.obj (.text:_ltostr)
-                  0000298a    0000004e     telitcomm.obj (.text:getResponse)
-                  000029d8    0000004e     main.obj (.text:retrieve_data)
-                  00002a26    0000004e     telitcomm.obj (.text:sendCmd)
-                  00002a74    00000046     rts430x.lib : autoinit.obj (.text:_auto_init)
-                  00002aba    00000042     main.obj (.text:initialize_fifo)
-                  00002afc    00000040     rts430x.lib : _printfi_min.obj (.text:_pproc_str)
-                  00002b3c    00000040                 : div32s.obj (.text)
-                  00002b7c    0000003a                 : memory.obj (.text:minit)
-                  00002bb6    00000038                 : sprintf.obj (.text:sprintf)
-                  00002bee    00000032     main.obj (.text:Transmit)
-                  00002c20    00000030     rts430x.lib : mult32_hw.obj (.text)
-                  00002c50    0000002e                 : _printfi_min.obj (.text:_getarg_diouxp)
-                  00002c7e    0000002c                 : _printfi_min.obj (.text:_pproc_diouxp)
-                  00002caa    00000028                 : memccpy.obj (.text:memccpy)
-                  00002cd2    00000028     main.obj (.text:tick)
-                  00002cfa    00000026     telitcomm.obj (.text:getRXBufferChar)
-                  00002d20    00000024     rts430x.lib : memcmp.obj (.text:memcmp)
-                  00002d44    0000001e     telitcomm.obj (.text:ackOK)
-                  00002d62    0000001e     main.obj (.text:measure_temperature)
-                  00002d80    0000001c     main.obj (.text:process_state)
-                  00002d9c    0000001a     rts430x.lib : _printfi_min.obj (.text:_div)
-                  00002db6    00000018                 : sprintf.obj (.text:_outs)
-                  00002dce    00000018                 : strcmp.obj (.text:strcmp)
-                  00002de6    00000016                 : div16u.obj (.text)
-                  00002dfc    00000016                 : mult16_hw.obj (.text)
-                  00002e12    00000014                 : memset.obj (.text:memset)
-                  00002e26    00000012                 : sprintf.obj (.text:_outc)
-                  00002e38    00000012     telitcomm.obj (.text:clearRXBuffer)
-                  00002e4a    00000012     rts430x.lib : memcpy.obj (.text:memcpy)
-                  00002e5c    00000012                 : strlen.obj (.text:strlen)
-                  00002e6e    0000000e     main.obj (.text:configure_timer)
-                  00002e7c    0000000e     telitcomm.obj (.text:isRXBufferEmpty)
-                  00002e8a    0000000e     main.obj (.text:not_empty)
-                  00002e98    00000008     telitcomm.obj (.text:ackPost)
-                  00002ea0    00000008     telitcomm.obj (.text:ackSD)
-                  00002ea8    00000008     main.obj (.text:show_tick)
-                  00002eb0    00000006     main.obj (.text:main)
-                  00002eb6    00000004     rts430x.lib : pre_init.obj (.text:_system_pre_init)
-                  00002eba    00000004                 : exit.obj (.text:abort)
-                  00002ebe    00000002                 : _lock.obj (.text:_nop)
+.cinit     0    00002208    00000070     
+                  00002208    00000024     mma8451q.obj (.cinit)
+                  0000222c    0000001f     telitcomm.obj (.cinit)
+                  0000224b    00000001     --HOLE-- [fill = 0]
+                  0000224c    0000001e     main.obj (.cinit)
+                  0000226a    0000000c     defaultprocessor.obj (.cinit)
+                  00002276    00000002     --HOLE-- [fill = 0]
 
-.const     0    00002ec0    0000014e     
-                  00002ec0    0000013a     telitcomm.obj (.const:.string)
-                  00002ffa    00000014     rts430x.lib : _printfi_min.obj (.const:.string)
+.text      0    00002278    00000496     
+                  00002278    00000080     main.obj (.text:attachInterrupt)
+                  000022f8    00000062     mma8451q.obj (.text:initMMA8451Q)
+                  0000235a    00000048     txrxlpfi2c.obj (.text:readI2C)
+                  000023a2    00000046     rts430x.lib : autoinit.obj (.text:_auto_init)
+                  000023e8    00000040     txrxlpfi2c.obj (.text:writeI2C)
+                  00002428    0000003c     mma8451q.obj (.text:beginMMA8451Q)
+                  00002464    00000038     main.obj (.text:initialize)
+                  0000249c    00000036     main.obj (.text:getBuffer)
+                  000024d2    00000034     main.obj (.text:detachInterrupt)
+                  00002506    00000034     mma8451q.obj (.text:executeMMA8451Q)
+                  0000253a    00000034     main.obj (.text:executeProcs)
+                  0000256e    00000028     txrxlpfi2c.obj (.text:enableI2C)
+                  00002596    00000028     telitcomm.obj (.text:gprsSend)
+                  000025be    00000026     telitcomm.obj (.text:do_init)
+                  000025e4    00000020     main.obj (.text:flushTransmission)
+                  00002604    0000001e     telitcomm.obj (.text:sendData)
+                  00002622    0000001c     main.obj (.text:logError)
+                  0000263e    00000018     telitcomm.obj (.text:gprsClose)
+                  00002656    00000018     main.obj (.text:process_state)
+                  0000266e    00000016     main.obj (.text:main)
+                  00002684    00000012     main.obj (.text:disablePeriodic)
+                  00002696    00000012     rts430x.lib : memcpy.obj (.text:memcpy)
+                  000026a8    00000012     defaultprocessor.obj (.text:mma8451qProc)
+                  000026ba    00000010     main.obj (.text:enablePeriodic)
+                  000026ca    0000000e     main.obj (.text:configure_timer)
+                  000026d8    0000000a     main.obj (.text:closeTransmission)
+                  000026e2    0000000a     rts430x.lib : lsl16.obj (.text)
+                  000026ec    00000006     txrxlpfi2c.obj (.text:disableI2C)
+                  000026f2    00000006     telitcomm.obj (.text:do_uninit)
+                  000026f8    00000006     mma8451q.obj (.text:mma8451qVector)
+                  000026fe    00000004     rts430x.lib : pre_init.obj (.text:_system_pre_init)
+                  00002702    00000004                 : exit.obj (.text:abort)
+                  00002706    00000004     telitcomm.obj (.text:do_open)
+                  0000270a    00000002     rts430x.lib : _lock.obj (.text:_nop)
+                  0000270c    00000002     defaultprocessor.obj (.text:thermistorProc)
+
+.const     0    0000270e    00000007     
+                  0000270e    00000004     telitcomm.obj (.const:.string)
+                  00002712    00000002     mma8451q.obj (.const:$P$T0$1)
+                  00002714    00000001     main.obj (.const)
 
 .int16     0    0000ffe0    00000002     
                   0000ffe0    00000002     main.obj (.int16)
 
-.int23     0    0000ffee    00000002     
-                  0000ffee    00000002     telitcomm.obj (.int23)
+.int17     0    0000ffe2    00000002     
+                  0000ffe2    00000002     main.obj (.int17)
+
+.int20     0    0000ffe8    00000002     
+                  0000ffe8    00000002     main.obj (.int20)
 
 .int25     0    0000fff2    00000002     
                   0000fff2    00000002     telitcomm.obj (.int25)
@@ -169,7 +156,6 @@ ffffffff   .text
 000001a2   ADC12CTL1
 000001a6   ADC12IE
 000001a4   ADC12IFG
-0000229c   ADC12ISR
 000001a8   ADC12IV
 00000080   ADC12MCTL0
 00000081   ADC12MCTL1
@@ -203,12 +189,11 @@ ffffffff   .text
 0000014e   ADC12MEM7
 00000150   ADC12MEM8
 00000152   ADC12MEM9
-000011a8   ADCresult
 00000046   BTCNT1
 00000046   BTCNT12
 00000047   BTCNT2
 00000040   BTCTL
-00002eba   C$$EXIT
+00002702   C$$EXIT
 00000059   CACTL1
 0000005a   CACTL2
 0000005b   CAPD
@@ -237,8 +222,6 @@ ffffffff   .text
 00000122   DMACTL0
 00000124   DMACTL1
 00000126   DMAIV
-000011aa   DegC
-000011ae   DegF
 00000128   FCTL1
 0000012a   FCTL2
 0000012c   FCTL3
@@ -248,6 +231,7 @@ ffffffff   .text
 00000001   IE2
 00000002   IFG1
 00000003   IFG2
+000026e2   I_LSL
 00000090   LCDACTL
 000000ac   LCDAPCTL0
 000000ad   LCDAPCTL1
@@ -339,6 +323,8 @@ ffffffff   .text
 00000008   PBIN
 0000000a   PBOUT
 0000000e   PBSEL
+00002142   Port_1
+00002180   Port_2
 0000013c   RESHI
 0000013a   RESLO
 00000041   RTCCTL
@@ -386,7 +372,6 @@ ffffffff   .text
 00000180   TBCTL
 0000011e   TBIV
 00000190   TBR
-00002bee   Transmit
 0000007c   U1BR0
 0000007d   U1BR1
 00000078   U1CTL
@@ -416,98 +401,90 @@ ffffffff   .text
 0000006e   UCB0RXBUF
 0000006d   UCB0STAT
 0000006f   UCB0TXBUF
-00002240   USCIA0RX_ISR
+000021e8   USCIA0RX_ISR
 00000120   WDTCTL
 00002100   __STACK_END
 00000050   __STACK_SIZE
-00000050   __SYSMEM_SIZE
 00000001   __TI_args_main
 00000001   __TI_auto_init
 00000001   __TI_exit
 ffffffff   __binit__
 00001100   __bss__
 ffffffff   __c_args__
-00002100   __cinit__
-00002b3c   __divli
-00002de6   __divu
-000028e0   __divul
-000012a4   __end__
+00002208   __cinit__
+00001290   __end__
 ffffffff   __etext__
-00002dfc   __mpyi_hw
-00002c20   __mpyl_hw
 ffffffff   __pinit__
-00002b3c   __remli
-00002de6   __remu
-000028e0   __remul
 ffffffff   __text__
-00002a74   _auto_init
-00002272   _c_int00
-00002272   _c_int00_noexit
-00001294   _cleanup_ptr
-00001298   _dtors_ptr
-0000128c   _lock
-00002ebe   _nop
-0000251c   _printfi_minimal
+000023a2   _auto_init
+000021be   _c_int00
+000021be   _c_int00_noexit
+00001288   _cleanup_ptr
+0000128c   _dtors_ptr
+00001280   _lock
+0000270a   _nop
 0000fffe   _reset_vector
 000020b0   _stack
-000012a4   _sys_memory
-00002eb6   _system_pre_init
-00001290   _unlock
-00002eba   abort
-00002d44   ackOK
-00002e98   ackPost
-00002ea0   ackSD
-000027d6   ackSGACT
-000022aa   basic_timer
+000026fe   _system_pre_init
+00001284   _unlock
+00002702   abort
+00002278   attachInterrupt
+00002100   basic_timer
+00002428   beginMMA8451Q
 ffffffff   binit
-00002100   cinit
-00002e38   clearRXBuffer
-000011a4   cmdstatus
-00002e6e   configure_timer
-00001258   control_state
-0000125a   datastore
-000012a4   end
+00002208   cinit
+000026d8   closeTransmission
+000026ca   configure_timer
+00001216   control_state
+00001108   dataBuffer
+000011d4   dataPntr
+000024d2   detachInterrupt
+000026ec   disableI2C
+00002684   disablePeriodic
+000025be   do_init
+00002706   do_open
+000026f2   do_uninit
+0000256e   enableI2C
+000026ba   enablePeriodic
+00001290   end
 ffffffff   etext
-00002682   free
-00002cfa   getRXBufferChar
-0000298a   getResponse
-000011a6   i
-00002830   initComms
-00002888   initialize
-00002aba   initialize_fifo
-00002e7c   isRXBufferEmpty
-00002eb0   main
-000025dc   malloc
-00001100   mbi
-00001180   mbpos
-00002d62   measure_temperature
-00002caa   memccpy
-00002d20   memcmp
-00002e4a   memcpy
-00002e12   memset
-00002b7c   minit
-00001256   minutes_counter
-00002e8a   not_empty
-00002702   performPost
+00002506   executeMMA8451Q
+0000253a   executeProcs
+000025e4   flushTransmission
+0000249c   getBuffer
+0000263e   gprsClose
+00002596   gprsSend
+00001264   gprs_state
+000022f8   initMMA8451Q
+00002464   initialize
+00002622   logError
+0000266e   main
+00002696   memcpy
+000026a8   mma8451qProc
+000026f8   mma8451qVector
 ffffffff   pinit
-00002d80   process_state
-000029d8   retrieve_data
-00002a26   sendCmd
-00002ea8   show_tick
-00002bb6   sprintf
-0000276e   store_data
-00002dce   strcmp
-00002e5c   strlen
-00001288   tempAverage
-00002cd2   tick
-000011b2   timedout
-000022b4   transComms
-00001270   transmit_log
-00001254   two_second_intervals
-00001286   tx_byte
-00001182   ucRXBuffer
-000011a3   ucReadIndex
-000011a2   ucWriteIndex
+00001278   procMap
+00002656   process_state
+0000235a   readI2C
+00001218   resp
+00001270   sctl1
+00001272   sctl2
+00001274   sctl4
+00001276   sctl5
+00001100   second_intervals
+00002604   sendData
+0000126c   srate
+0000126e   srnge
+0000270c   thermistorProc
+00001262   timedout
+00001104   timeout
+00001106   timeout_intervals
+00001102   timermode
+00001240   ucRXBuffer
+00001261   ucReadIndex
+00001260   ucWriteIndex
+000011d6   vectorMap
+000023e8   writeI2C
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -596,7 +573,6 @@ address    name
 0000004f   RTCYEARH
 00000050   SCFI0
 00000050   __STACK_SIZE
-00000050   __SYSMEM_SIZE
 00000051   SCFI1
 00000052   SCFQCTL
 00000053   FLL_CTL0
@@ -767,88 +743,79 @@ address    name
 000001f2   DMA2SZ
 00001100   .bss
 00001100   __bss__
-00001100   mbi
-00001180   mbpos
-00001182   ucRXBuffer
-000011a2   ucWriteIndex
-000011a3   ucReadIndex
-000011a4   cmdstatus
-000011a6   i
-000011a8   ADCresult
-000011aa   DegC
-000011ae   DegF
-000011b2   timedout
-00001254   two_second_intervals
-00001256   minutes_counter
-00001258   control_state
-0000125a   datastore
-00001270   transmit_log
-00001286   tx_byte
-00001288   tempAverage
-0000128c   _lock
-00001290   _unlock
-00001294   _cleanup_ptr
-00001298   _dtors_ptr
-000012a4   __end__
-000012a4   _sys_memory
-000012a4   end
+00001100   second_intervals
+00001102   timermode
+00001104   timeout
+00001106   timeout_intervals
+00001108   dataBuffer
+000011d4   dataPntr
+000011d6   vectorMap
+00001216   control_state
+00001218   resp
+00001240   ucRXBuffer
+00001260   ucWriteIndex
+00001261   ucReadIndex
+00001262   timedout
+00001264   gprs_state
+0000126c   srate
+0000126e   srnge
+00001270   sctl1
+00001272   sctl2
+00001274   sctl4
+00001276   sctl5
+00001278   procMap
+00001280   _lock
+00001284   _unlock
+00001288   _cleanup_ptr
+0000128c   _dtors_ptr
+00001290   __end__
+00001290   end
 000020b0   _stack
 00002100   __STACK_END
-00002100   __cinit__
-00002100   cinit
-00002240   USCIA0RX_ISR
-00002272   _c_int00
-00002272   _c_int00_noexit
-0000229c   ADC12ISR
-000022aa   basic_timer
-000022b4   transComms
-0000251c   _printfi_minimal
-000025dc   malloc
-00002682   free
-00002702   performPost
-0000276e   store_data
-000027d6   ackSGACT
-00002830   initComms
-00002888   initialize
-000028e0   __divul
-000028e0   __remul
-0000298a   getResponse
-000029d8   retrieve_data
-00002a26   sendCmd
-00002a74   _auto_init
-00002aba   initialize_fifo
-00002b3c   __divli
-00002b3c   __remli
-00002b7c   minit
-00002bb6   sprintf
-00002bee   Transmit
-00002c20   __mpyl_hw
-00002caa   memccpy
-00002cd2   tick
-00002cfa   getRXBufferChar
-00002d20   memcmp
-00002d44   ackOK
-00002d62   measure_temperature
-00002d80   process_state
-00002dce   strcmp
-00002de6   __divu
-00002de6   __remu
-00002dfc   __mpyi_hw
-00002e12   memset
-00002e38   clearRXBuffer
-00002e4a   memcpy
-00002e5c   strlen
-00002e6e   configure_timer
-00002e7c   isRXBufferEmpty
-00002e8a   not_empty
-00002e98   ackPost
-00002ea0   ackSD
-00002ea8   show_tick
-00002eb0   main
-00002eb6   _system_pre_init
-00002eba   C$$EXIT
-00002eba   abort
-00002ebe   _nop
+00002100   basic_timer
+00002142   Port_1
+00002180   Port_2
+000021be   _c_int00
+000021be   _c_int00_noexit
+000021e8   USCIA0RX_ISR
+00002208   __cinit__
+00002208   cinit
+00002278   attachInterrupt
+000022f8   initMMA8451Q
+0000235a   readI2C
+000023a2   _auto_init
+000023e8   writeI2C
+00002428   beginMMA8451Q
+00002464   initialize
+0000249c   getBuffer
+000024d2   detachInterrupt
+00002506   executeMMA8451Q
+0000253a   executeProcs
+0000256e   enableI2C
+00002596   gprsSend
+000025be   do_init
+000025e4   flushTransmission
+00002604   sendData
+00002622   logError
+0000263e   gprsClose
+00002656   process_state
+0000266e   main
+00002684   disablePeriodic
+00002696   memcpy
+000026a8   mma8451qProc
+000026ba   enablePeriodic
+000026ca   configure_timer
+000026d8   closeTransmission
+000026e2   I_LSL
+000026ec   disableI2C
+000026f2   do_uninit
+000026f8   mma8451qVector
+000026fe   _system_pre_init
+00002702   C$$EXIT
+00002702   abort
+00002706   do_open
+0000270a   _nop
+0000270c   thermistorProc
 0000fffe   _reset_vector
 ffffffff   .text
 ffffffff   __binit__
@@ -860,4 +827,4 @@ ffffffff   binit
 ffffffff   etext
 ffffffff   pinit
 
-[345 symbols]
+[335 symbols]
