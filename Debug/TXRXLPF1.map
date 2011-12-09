@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v4.0.0                      
 ******************************************************************************
->> Linked Wed Dec 07 22:06:26 2011
+>> Linked Thu Dec 08 22:06:14 2011
 
 OUTPUT FILE NAME:   <TXRXLPF1.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 000021be
+ENTRY POINT SYMBOL: "_c_int00"  address: 00002344
 
 
 MEMORY CONFIGURATION
@@ -16,8 +16,8 @@ MEMORY CONFIGURATION
   PERIPHERALS_16BIT     00000100   00000100  00000000  00000100  RWIX
   INFOB                 00001000   00000080  00000000  00000080  RWIX
   INFOA                 00001080   00000080  00000000  00000080  RWIX
-  RAM                   00001100   00001000  000001e0  00000e20  RWIX
-  FLASH                 00002100   0000dec0  00000615  0000d8ab  RWIX
+  RAM                   00001100   00001000  0000027e  00000d82  RWIX
+  FLASH                 00002100   0000dec0  00000b01  0000d3bf  RWIX
   INT00                 0000ffc0   00000002  00000000  00000002  RWIX
   INT01                 0000ffc2   00000002  00000000  00000002  RWIX
   INT02                 0000ffc4   00000002  00000000  00000002  RWIX
@@ -60,75 +60,90 @@ section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
 .pinit     0    00002100    00000000     UNINITIALIZED
 
-.bss       0    00001100    00000190     UNINITIALIZED
+.bss       0    00001100    0000022e     UNINITIALIZED
                   00001100    00000118     main.obj (.bss)
-                  00001218    00000054     telitcomm.obj (.bss)
-                  0000126c    0000000c     mma8451q.obj (.bss)
-                  00001278    00000008     defaultprocessor.obj (.bss)
-                  00001280    00000008     rts430x.lib : _lock.obj (.bss)
-                  00001288    00000008                 : boot.obj (.bss)
+                  00001218    000000f2     telitcomm.obj (.bss)
+                  0000130a    0000000c     mma8451q.obj (.bss)
+                  00001316    00000008     defaultprocessor.obj (.bss)
+                  0000131e    00000008     rts430x.lib : _lock.obj (.bss)
+                  00001326    00000008                 : boot.obj (.bss)
 
 .stack     0    000020b0    00000050     UNINITIALIZED
                   000020b0    00000002     rts430x.lib : boot.obj (.stack)
                   000020b2    0000004e     --HOLE--
 
+.cinit     0    00002100    00000186     
+                  00002100    00000136     telitcomm.obj (.cinit)
+                  00002236    00000024     mma8451q.obj (.cinit)
+                  0000225a    0000001e     main.obj (.cinit)
+                  00002278    0000000c     defaultprocessor.obj (.cinit)
+                  00002284    00000002     --HOLE-- [fill = 0]
+
 .text:_isr 
-*          0    00002100    00000108     
-                  00002100    00000042     main.obj (.text:_isr:basic_timer)
-                  00002142    0000003e     main.obj (.text:_isr:Port_1)
-                  00002180    0000003e     main.obj (.text:_isr:Port_2)
-                  000021be    0000002a     rts430x.lib : boot.obj (.text:_isr:_c_int00_noexit)
-                  000021e8    00000020     telitcomm.obj (.text:_isr:USCIA0RX_ISR)
+*          0    00002286    00000108     
+                  00002286    00000042     main.obj (.text:_isr:basic_timer)
+                  000022c8    0000003e     main.obj (.text:_isr:Port_1)
+                  00002306    0000003e     main.obj (.text:_isr:Port_2)
+                  00002344    0000002a     rts430x.lib : boot.obj (.text:_isr:_c_int00_noexit)
+                  0000236e    00000020     telitcomm.obj (.text:_isr:USCIA0RX_ISR)
 
-.cinit     0    00002208    00000070     
-                  00002208    00000024     mma8451q.obj (.cinit)
-                  0000222c    0000001f     telitcomm.obj (.cinit)
-                  0000224b    00000001     --HOLE-- [fill = 0]
-                  0000224c    0000001e     main.obj (.cinit)
-                  0000226a    0000000c     defaultprocessor.obj (.cinit)
-                  00002276    00000002     --HOLE-- [fill = 0]
+.text      0    0000238e    0000071c     
+                  0000238e    00000080     main.obj (.text:attachInterrupt)
+                  0000240e    00000062     mma8451q.obj (.text:initMMA8451Q)
+                  00002470    00000058     telitcomm.obj (.text:do_open)
+                  000024c8    00000056     telitcomm.obj (.text:sendCmd)
+                  0000251e    00000048     txrxlpfi2c.obj (.text:readI2C)
+                  00002566    00000046     rts430x.lib : autoinit.obj (.text:_auto_init)
+                  000025ac    00000042     telitcomm.obj (.text:do_close)
+                  000025ee    00000040     telitcomm.obj (.text:getResponse)
+                  0000262e    00000040     txrxlpfi2c.obj (.text:writeI2C)
+                  0000266e    0000003e     telitcomm.obj (.text:ackSGACT)
+                  000026ac    0000003e     telitcomm.obj (.text:do_reset)
+                  000026ea    0000003c     mma8451q.obj (.text:beginMMA8451Q)
+                  00002726    00000038     main.obj (.text:initialize)
+                  0000275e    00000036     main.obj (.text:getBuffer)
+                  00002794    00000036     defaultprocessor.obj (.text:mma8451qProc)
+                  000027ca    00000034     main.obj (.text:detachInterrupt)
+                  000027fe    00000034     mma8451q.obj (.text:executeMMA8451Q)
+                  00002832    00000034     main.obj (.text:executeProcs)
+                  00002866    00000030     telitcomm.obj (.text:gprsSend)
+                  00002896    0000002a     telitcomm.obj (.text:do_init)
+                  000028c0    00000028     txrxlpfi2c.obj (.text:enableI2C)
+                  000028e8    00000026     telitcomm.obj (.text:getRXBufferChar)
+                  0000290e    00000020     telitcomm.obj (.text:ackSend)
+                  0000292e    00000020     main.obj (.text:flushTransmission)
+                  0000294e    0000001e     telitcomm.obj (.text:sendData)
+                  0000296c    0000001c     main.obj (.text:logError)
+                  00002988    0000001a     telitcomm.obj (.text:gprsClose)
+                  000029a2    00000018     main.obj (.text:process_state)
+                  000029ba    00000016     main.obj (.text:main)
+                  000029d0    00000016     telitcomm.obj (.text:memcmp)
+                  000029e6    00000014     telitcomm.obj (.text:ackOK)
+                  000029fa    00000014     telitcomm.obj (.text:ackSD)
+                  00002a0e    00000012     telitcomm.obj (.text:clearRXBuffer)
+                  00002a20    00000012     main.obj (.text:disablePeriodic)
+                  00002a32    00000012     rts430x.lib : memcpy.obj (.text:memcpy)
+                  00002a44    00000010     main.obj (.text:enablePeriodic)
+                  00002a54    0000000e     main.obj (.text:configure_timer)
+                  00002a62    0000000e     telitcomm.obj (.text:isRXBufferEmpty)
+                  00002a70    0000000a     main.obj (.text:closeTransmission)
+                  00002a7a    0000000a     telitcomm.obj (.text:do_uninit)
+                  00002a84    0000000a     rts430x.lib : lsl16.obj (.text)
+                  00002a8e    00000006     txrxlpfi2c.obj (.text:disableI2C)
+                  00002a94    00000006     mma8451q.obj (.text:mma8451qVector)
+                  00002a9a    00000004     rts430x.lib : pre_init.obj (.text:_system_pre_init)
+                  00002a9e    00000004                 : exit.obj (.text:abort)
+                  00002aa2    00000004     telitcomm.obj (.text:ackNoOp)
+                  00002aa6    00000002     rts430x.lib : _lock.obj (.text:_nop)
+                  00002aa8    00000002     defaultprocessor.obj (.text:thermistorProc)
 
-.text      0    00002278    00000496     
-                  00002278    00000080     main.obj (.text:attachInterrupt)
-                  000022f8    00000062     mma8451q.obj (.text:initMMA8451Q)
-                  0000235a    00000048     txrxlpfi2c.obj (.text:readI2C)
-                  000023a2    00000046     rts430x.lib : autoinit.obj (.text:_auto_init)
-                  000023e8    00000040     txrxlpfi2c.obj (.text:writeI2C)
-                  00002428    0000003c     mma8451q.obj (.text:beginMMA8451Q)
-                  00002464    00000038     main.obj (.text:initialize)
-                  0000249c    00000036     main.obj (.text:getBuffer)
-                  000024d2    00000034     main.obj (.text:detachInterrupt)
-                  00002506    00000034     mma8451q.obj (.text:executeMMA8451Q)
-                  0000253a    00000034     main.obj (.text:executeProcs)
-                  0000256e    00000028     txrxlpfi2c.obj (.text:enableI2C)
-                  00002596    00000028     telitcomm.obj (.text:gprsSend)
-                  000025be    00000026     telitcomm.obj (.text:do_init)
-                  000025e4    00000020     main.obj (.text:flushTransmission)
-                  00002604    0000001e     telitcomm.obj (.text:sendData)
-                  00002622    0000001c     main.obj (.text:logError)
-                  0000263e    00000018     telitcomm.obj (.text:gprsClose)
-                  00002656    00000018     main.obj (.text:process_state)
-                  0000266e    00000016     main.obj (.text:main)
-                  00002684    00000012     main.obj (.text:disablePeriodic)
-                  00002696    00000012     rts430x.lib : memcpy.obj (.text:memcpy)
-                  000026a8    00000012     defaultprocessor.obj (.text:mma8451qProc)
-                  000026ba    00000010     main.obj (.text:enablePeriodic)
-                  000026ca    0000000e     main.obj (.text:configure_timer)
-                  000026d8    0000000a     main.obj (.text:closeTransmission)
-                  000026e2    0000000a     rts430x.lib : lsl16.obj (.text)
-                  000026ec    00000006     txrxlpfi2c.obj (.text:disableI2C)
-                  000026f2    00000006     telitcomm.obj (.text:do_uninit)
-                  000026f8    00000006     mma8451q.obj (.text:mma8451qVector)
-                  000026fe    00000004     rts430x.lib : pre_init.obj (.text:_system_pre_init)
-                  00002702    00000004                 : exit.obj (.text:abort)
-                  00002706    00000004     telitcomm.obj (.text:do_open)
-                  0000270a    00000002     rts430x.lib : _lock.obj (.text:_nop)
-                  0000270c    00000002     defaultprocessor.obj (.text:thermistorProc)
-
-.const     0    0000270e    00000007     
-                  0000270e    00000004     telitcomm.obj (.const:.string)
-                  00002712    00000002     mma8451q.obj (.const:$P$T0$1)
-                  00002714    00000001     main.obj (.const)
+.const     0    00002aaa    00000157     
+                  00002aaa    00000136     telitcomm.obj (.const:.string)
+                  00002be0    00000010     telitcomm.obj (.const:$P$T0$1)
+                  00002bf0    00000008     telitcomm.obj (.const:$P$T1$2)
+                  00002bf8    00000006     telitcomm.obj (.const:$P$T2$3)
+                  00002bfe    00000002     mma8451q.obj (.const:$P$T0$1)
+                  00002c00    00000001     main.obj (.const)
 
 .int16     0    0000ffe0    00000002     
                   0000ffe0    00000002     main.obj (.int16)
@@ -193,7 +208,7 @@ ffffffff   .text
 00000046   BTCNT12
 00000047   BTCNT2
 00000040   BTCTL
-00002702   C$$EXIT
+00002a9e   C$$EXIT
 00000059   CACTL1
 0000005a   CACTL2
 0000005b   CAPD
@@ -231,7 +246,7 @@ ffffffff   .text
 00000001   IE2
 00000002   IFG1
 00000003   IFG2
-000026e2   I_LSL
+00002a84   I_LSL
 00000090   LCDACTL
 000000ac   LCDAPCTL0
 000000ad   LCDAPCTL1
@@ -323,8 +338,8 @@ ffffffff   .text
 00000008   PBIN
 0000000a   PBOUT
 0000000e   PBSEL
-00002142   Port_1
-00002180   Port_2
+000022c8   Port_1
+00002306   Port_2
 0000013c   RESHI
 0000013a   RESLO
 00000041   RTCCTL
@@ -401,7 +416,7 @@ ffffffff   .text
 0000006e   UCB0RXBUF
 0000006d   UCB0STAT
 0000006f   UCB0TXBUF
-000021e8   USCIA0RX_ISR
+0000236e   USCIA0RX_ISR
 00000120   WDTCTL
 00002100   __STACK_END
 00000050   __STACK_SIZE
@@ -411,71 +426,83 @@ ffffffff   .text
 ffffffff   __binit__
 00001100   __bss__
 ffffffff   __c_args__
-00002208   __cinit__
-00001290   __end__
+00002100   __cinit__
+0000132e   __end__
 ffffffff   __etext__
 ffffffff   __pinit__
 ffffffff   __text__
-000023a2   _auto_init
-000021be   _c_int00
-000021be   _c_int00_noexit
-00001288   _cleanup_ptr
-0000128c   _dtors_ptr
-00001280   _lock
-0000270a   _nop
+00002566   _auto_init
+00002344   _c_int00
+00002344   _c_int00_noexit
+00001326   _cleanup_ptr
+0000132a   _dtors_ptr
+0000131e   _lock
+00002aa6   _nop
 0000fffe   _reset_vector
 000020b0   _stack
-000026fe   _system_pre_init
-00001284   _unlock
-00002702   abort
-00002278   attachInterrupt
-00002100   basic_timer
-00002428   beginMMA8451Q
+00002a9a   _system_pre_init
+00001322   _unlock
+00002a9e   abort
+00002aa2   ackNoOp
+000029e6   ackOK
+000029fa   ackSD
+0000266e   ackSGACT
+0000290e   ackSend
+0000238e   attachInterrupt
+00002286   basic_timer
+000026ea   beginMMA8451Q
 ffffffff   binit
-00002208   cinit
-000026d8   closeTransmission
-000026ca   configure_timer
+00002100   cinit
+00002a0e   clearRXBuffer
+00002a70   closeTransmission
+00002a54   configure_timer
 00001216   control_state
 00001108   dataBuffer
 000011d4   dataPntr
-000024d2   detachInterrupt
-000026ec   disableI2C
-00002684   disablePeriodic
-000025be   do_init
-00002706   do_open
-000026f2   do_uninit
-0000256e   enableI2C
-000026ba   enablePeriodic
-00001290   end
+000027ca   detachInterrupt
+00002a8e   disableI2C
+00002a20   disablePeriodic
+000025ac   do_close
+00002896   do_init
+00002470   do_open
+000026ac   do_reset
+00002a7a   do_uninit
+000028c0   enableI2C
+00002a44   enablePeriodic
+0000132e   end
 ffffffff   etext
-00002506   executeMMA8451Q
-0000253a   executeProcs
-000025e4   flushTransmission
-0000249c   getBuffer
-0000263e   gprsClose
-00002596   gprsSend
+000027fe   executeMMA8451Q
+00002832   executeProcs
+0000292e   flushTransmission
+0000275e   getBuffer
+000028e8   getRXBufferChar
+000025ee   getResponse
+00002988   gprsClose
+00002866   gprsSend
 00001264   gprs_state
-000022f8   initMMA8451Q
-00002464   initialize
-00002622   logError
-0000266e   main
-00002696   memcpy
-000026a8   mma8451qProc
-000026f8   mma8451qVector
+0000240e   initMMA8451Q
+00002726   initialize
+00002a62   isRXBufferEmpty
+0000296c   logError
+000029ba   main
+000029d0   memcmp
+00002a32   memcpy
+00002794   mma8451qProc
+00002a94   mma8451qVector
 ffffffff   pinit
-00001278   procMap
-00002656   process_state
-0000235a   readI2C
-00001218   resp
-00001270   sctl1
-00001272   sctl2
-00001274   sctl4
-00001276   sctl5
+00001316   procMap
+000029a2   process_state
+0000251e   readI2C
+0000130e   sctl1
+00001310   sctl2
+00001312   sctl4
+00001314   sctl5
 00001100   second_intervals
-00002604   sendData
-0000126c   srate
-0000126e   srnge
-0000270c   thermistorProc
+000024c8   sendCmd
+0000294e   sendData
+0000130a   srate
+0000130c   srnge
+00002aa8   thermistorProc
 00001262   timedout
 00001104   timeout
 00001106   timeout_intervals
@@ -484,7 +511,7 @@ ffffffff   pinit
 00001261   ucReadIndex
 00001260   ucWriteIndex
 000011d6   vectorMap
-000023e8   writeI2C
+0000262e   writeI2C
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -751,71 +778,83 @@ address    name
 000011d4   dataPntr
 000011d6   vectorMap
 00001216   control_state
-00001218   resp
 00001240   ucRXBuffer
 00001260   ucWriteIndex
 00001261   ucReadIndex
 00001262   timedout
 00001264   gprs_state
-0000126c   srate
-0000126e   srnge
-00001270   sctl1
-00001272   sctl2
-00001274   sctl4
-00001276   sctl5
-00001278   procMap
-00001280   _lock
-00001284   _unlock
-00001288   _cleanup_ptr
-0000128c   _dtors_ptr
-00001290   __end__
-00001290   end
+0000130a   srate
+0000130c   srnge
+0000130e   sctl1
+00001310   sctl2
+00001312   sctl4
+00001314   sctl5
+00001316   procMap
+0000131e   _lock
+00001322   _unlock
+00001326   _cleanup_ptr
+0000132a   _dtors_ptr
+0000132e   __end__
+0000132e   end
 000020b0   _stack
 00002100   __STACK_END
-00002100   basic_timer
-00002142   Port_1
-00002180   Port_2
-000021be   _c_int00
-000021be   _c_int00_noexit
-000021e8   USCIA0RX_ISR
-00002208   __cinit__
-00002208   cinit
-00002278   attachInterrupt
-000022f8   initMMA8451Q
-0000235a   readI2C
-000023a2   _auto_init
-000023e8   writeI2C
-00002428   beginMMA8451Q
-00002464   initialize
-0000249c   getBuffer
-000024d2   detachInterrupt
-00002506   executeMMA8451Q
-0000253a   executeProcs
-0000256e   enableI2C
-00002596   gprsSend
-000025be   do_init
-000025e4   flushTransmission
-00002604   sendData
-00002622   logError
-0000263e   gprsClose
-00002656   process_state
-0000266e   main
-00002684   disablePeriodic
-00002696   memcpy
-000026a8   mma8451qProc
-000026ba   enablePeriodic
-000026ca   configure_timer
-000026d8   closeTransmission
-000026e2   I_LSL
-000026ec   disableI2C
-000026f2   do_uninit
-000026f8   mma8451qVector
-000026fe   _system_pre_init
-00002702   C$$EXIT
-00002702   abort
-00002706   do_open
-0000270a   _nop
-0000270c   thermistorProc
+00002100   __cinit__
+00002100   cinit
+00002286   basic_timer
+000022c8   Port_1
+00002306   Port_2
+00002344   _c_int00
+00002344   _c_int00_noexit
+0000236e   USCIA0RX_ISR
+0000238e   attachInterrupt
+0000240e   initMMA8451Q
+00002470   do_open
+000024c8   sendCmd
+0000251e   readI2C
+00002566   _auto_init
+000025ac   do_close
+000025ee   getResponse
+0000262e   writeI2C
+0000266e   ackSGACT
+000026ac   do_reset
+000026ea   beginMMA8451Q
+00002726   initialize
+0000275e   getBuffer
+00002794   mma8451qProc
+000027ca   detachInterrupt
+000027fe   executeMMA8451Q
+00002832   executeProcs
+00002866   gprsSend
+00002896   do_init
+000028c0   enableI2C
+000028e8   getRXBufferChar
+0000290e   ackSend
+0000292e   flushTransmission
+0000294e   sendData
+0000296c   logError
+00002988   gprsClose
+000029a2   process_state
+000029ba   main
+000029d0   memcmp
+000029e6   ackOK
+000029fa   ackSD
+00002a0e   clearRXBuffer
+00002a20   disablePeriodic
+00002a32   memcpy
+00002a44   enablePeriodic
+00002a54   configure_timer
+00002a62   isRXBufferEmpty
+00002a70   closeTransmission
+00002a7a   do_uninit
+00002a84   I_LSL
+00002a8e   disableI2C
+00002a94   mma8451qVector
+00002a9a   _system_pre_init
+00002a9e   C$$EXIT
+00002a9e   abort
+00002aa2   ackNoOp
+00002aa6   _nop
+00002aa8   thermistorProc
 0000fffe   _reset_vector
 ffffffff   .text
 ffffffff   __binit__
@@ -827,4 +866,4 @@ ffffffff   binit
 ffffffff   etext
 ffffffff   pinit
 
-[335 symbols]
+[347 symbols]

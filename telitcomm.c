@@ -15,19 +15,19 @@
 //   November 2011
 //   Built with CCE Version: 4.0.1
 //******************************************************************************
+
 #include  "msp430xG46x.h"
 #include "telitcomm.h"
-#include <stdlib.h>
 /*  Global Variables  */
-unsigned char resp[40];
+static char resp[40];
 volatile unsigned char ucRXBuffer[32];
 volatile unsigned char ucWriteIndex = 0;
 volatile unsigned char ucReadIndex = 0;
 volatile unsigned char timedout;
 gprs_state_t gprs_state = STATE_UNINIT;
 
-static unsigned char sgactt1[] = "#";
-static unsigned char sgactt2[] = "\n0";
+static char sgactt1[] = "#";
+static char sgactt2[] = "\n0";
 static char *atstr[]           = {"AT\r",0};
 static telitcmd at             = {atstr,&ackOK};
 static char *atechostr[]       = {"ATE\r",0};
@@ -42,14 +42,24 @@ static char *atsetusidstr[]    = {"AT#USERID=\"WAP@CINGULARGPRS.COM\"\r",0};
 static telitcmd atsetusid      = {atsetusidstr, &ackOK};
 static char *atsetpassstr[]    = {"AT#PASSW=\"CINGULAR1\"\r",0};
 static telitcmd atsetpass      = {atsetpassstr, &ackOK};
-static char *atconnectstr[]    = {"AT#SGACT=1,1\r",0};
-static telitcmd atconnect      = {atconnectstr, &ackSGACT};
-static char *atopenscktstr[]   = {"AT#SD=1,0,3000,\"","50.17.231.113","\",255\r",0};
-static telitcmd atopensckt     = {atopenscktstr, &ackSD};
-static char *atdisconnectstr[] = {"AT#SGACT=1,0\r",0};
-static telitcmd atdisconnect   = {atdisconnectstr, &ackOK};
+
 static char *atcgdcontstr[]    = {"AT+CGDCONT=1,\"IP\",\"WAP.CINGULAR\"\r", 0};
 static telitcmd atcgdcont      = {atcgdcontstr, &ackOK};
+static char *atstorestr[]      = {"AT&W\r", 0};
+static telitcmd atstore        = {atstorestr, &ackOK};
+static char *atconnectstr[]    = {"AT#SGACT=1,1\r",0};
+static telitcmd atconnect      = {atconnectstr, &ackSGACT};
+
+static char *atopenscktstr[]   = {"AT#SD=1,0,3000,\"","50.17.231.113","\",255\r",0};
+static telitcmd atopensckt     = {atopenscktstr, &ackSD};
+
+static char *atpoststr[]       = {"POST /posttest HTTP/1.1\r\nContent-Type: text/plain\r\nTransfer-Encoding: chunked\r\nHost: ", "50.17.231.113", "\r\n\r\n", 0};
+static telitcmd atpost         = {atpoststr, &ackNoOp};
+static char *atposttermstr[]   = {"0\r\n\r\n+++", 0};
+static telitcmd atpostterm         = {atposttermstr, &ackSend};
+
+static char *atdisconnectstr[] = {"AT#SGACT=1,0\r",0};
+static telitcmd atdisconnect   = {atdisconnectstr, &ackOK};
 static char *atclosestr[]      = {"AT#SH=1\r",0};
 static telitcmd atclose        = {atclosestr, &ackOK};
 
@@ -90,45 +100,82 @@ void do_init() {
 	UCA0BR1 = 0x00;                           //
 	UCA0MCTL = UCBRS2 +UCBRS1+ UCBRS0;                          // Modulation
 	UCA0CTL1 &= ~UCSWRST;                     // **Initialize USCI state machine**
-}
-
-unsigned int do_open() {
-	return 0;
+	gprs_state = STATE_INIT;
 }
 
 void do_uninit() {
 	UCA0CTL1 |= UCSWRST;
+	gprs_state = STATE_UNINIT;
 }
+
+unsigned int do_reset() {
+
+	telitcmd *cmds[8] = {&atecho, &atv, &atq, &atflowctl, &atsetusid, &atsetpass, &atcgdcont, &atstore};
+		unsigned char pos = 0;
+		while(pos<8) sendCmd(*(cmds[pos++]));
+		gprs_state = STATE_INIT;
+		return 0;
+}
+unsigned int do_open() {
+	telitcmd *cmds[4] = {&at, &atconnect, &atopensckt, &atpost};
+	unsigned char pos = 0;
+	unsigned char retried = 0;
+	while(pos<4) {
+		if(sendCmd(*(cmds[pos++]))) {
+			if(retried) {
+				return 1;
+			} else {
+				do_reset();
+				retried = 1;
+			}
+		}
+	}
+	gprs_state = STATE_OPEN;
+	return 0;
+}
+
 unsigned int do_close() {
+	telitcmd *cmds[3] = {&atpostterm, &atdisconnect, &atclose};
+	unsigned char pos = 0;
+	while(pos<3) sendCmd(*(cmds[pos++]));
+	gprs_state = STATE_INIT;
 	return 0;
 }
 
 unsigned int gprsSend(unsigned char *data, unsigned int len) {
 	switch (gprs_state) {
-		case STATE_UNINIT:
-			do_init();
-		case STATE_INIT:
-			if(do_open()) return 1;
-		}
-		return sendData(data, len);
+	case STATE_UNINIT:
+		do_init();
+	case STATE_INIT:
+		if(do_open()) return 1;
+	}
+
+	return sendData(data, len);
 }
 
 unsigned int gprsClose() {
 
 	switch (gprs_state) {
-		case STATE_OPEN:
-		case STATE_ERROR:
-			do_close();
-		case STATE_INIT:
-			do_uninit();
-		case STATE_UNINIT:
-			return 0;
+	case STATE_OPEN:
+	case STATE_ERROR:
+		do_close();
+	case STATE_INIT:
+		do_uninit();
+	case STATE_UNINIT:
+	default:
+		return 0;
 	}
 }
 
+unsigned int memcmp(char *a, char *b, unsigned int length) {
+	while(length>0) {
+		if(*a!= *b) return 1;
+	}
+	return 0;
+}
 unsigned int ackOK(void) {
 	getResponse();
-	return  memcmp(resp, "0", 2);
+	return memcmp(resp, "0", 2);
 }
 unsigned int ackSGACT(void) {
 	getResponse();
@@ -159,13 +206,20 @@ unsigned int ackSD(void) {
 	return memcmp(resp, "1", 2);
 }
 
+unsigned int ackNoOp(void) {
+	return 0;
+}
 unsigned int sendData(unsigned char *data, unsigned int len) {
 	unsigned int pos = 0;
+	// get length in hex
+	// send length + cr + lf
+
 	while(pos < len) {
 		while(!(IFG2&UCA0TXIFG));
-					UCA0TXBUF = *(data+pos);
-					pos++;
+		UCA0TXBUF = *(data+pos);
+		pos++;
 	}
+	//send cf lf
 	return 0;
 }
 
@@ -175,7 +229,7 @@ unsigned int sendCmd(telitcmd tcmd) {
 	unsigned int pos=0;
 	IE2 |= UCA0RXIE;                          // Enable USCI_A0 RX interrupt
 	clearRXBuffer();
-	while(*(tcmd.cmd+pos) != NULL) {
+	while(*(tcmd.cmd+pos) != 0) {
 		char *c = *(tcmd.cmd+pos);
 		pos++;
 		while(*c!='\0') {
