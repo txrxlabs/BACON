@@ -9,7 +9,7 @@
 #define TXRXLPF_H_
 
 #define RLY1  BIT6
-#define TRANSMIT_BUFFER_SIZE 204
+#define TRANSMIT_BUFFER_SIZE 2046
 #define PULSE_LENGTH 20 // pulse length in seconds
 
 #define     Bitime_5              0x05*4                      // ~ 0.5 bit length + small adjustment

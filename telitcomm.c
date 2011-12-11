@@ -18,6 +18,7 @@
 
 #include  "msp430xG46x.h"
 #include "telitcomm.h"
+#include <stdio.h>
 /*  Global Variables  */
 static char resp[40];
 volatile unsigned char ucRXBuffer[32];
@@ -111,10 +112,10 @@ void do_uninit() {
 unsigned int do_reset() {
 
 	telitcmd *cmds[8] = {&atecho, &atv, &atq, &atflowctl, &atsetusid, &atsetpass, &atcgdcont, &atstore};
-		unsigned char pos = 0;
-		while(pos<8) sendCmd(*(cmds[pos++]));
-		gprs_state = STATE_INIT;
-		return 0;
+	unsigned char pos = 0;
+	while(pos<8) sendCmd(*(cmds[pos++]));
+	gprs_state = STATE_INIT;
+	return 0;
 }
 unsigned int do_open() {
 	telitcmd *cmds[4] = {&at, &atconnect, &atopensckt, &atpost};
@@ -211,15 +212,28 @@ unsigned int ackNoOp(void) {
 }
 unsigned int sendData(unsigned char *data, unsigned int len) {
 	unsigned int pos = 0;
-	// get length in hex
-	// send length + cr + lf
+	char lb[7];
+	sprintf(lb, "%X\r\n", len);// get length in hex
 
+
+	while(lb[pos] != '\0') {
+		while(!(IFG2&UCA0TXIFG));
+		UCA0TXBUF = lb[pos++];
+	}
+	pos =0;
 	while(pos < len) {
 		while(!(IFG2&UCA0TXIFG));
-		UCA0TXBUF = *(data+pos);
+		UCA0TXBUF = data[pos];
 		pos++;
 	}
-	//send cf lf
+	pos =0;
+	char eb[] = "\r\n";
+	while(eb[pos] != '\0') {
+		while(!(IFG2&UCA0TXIFG));
+		UCA0TXBUF = eb[pos];
+		pos++;
+	}
+
 	return 0;
 }
 
