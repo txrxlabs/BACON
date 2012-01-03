@@ -9,12 +9,14 @@ CG_TOOL_ROOT := C:/ti/ccsv5/tools/compiler/msp430
 ORDERED_OBJS += \
 $(GEN_CMDS__FLAG) \
 "./txrxlpfi2c.obj" \
+"./temp.obj" \
 "./telitcomm.obj" \
+"./powermgmt.obj" \
 "./mma8451q.obj" \
 "./main.obj" \
 "./defaultprocessor.obj" \
 -l"libc.a" \
-"../lnk_msp430fg4616.cmd" \
+"../lnk_msp430fg4619.cmd" \
 
 -include ../makefile.init
 
@@ -113,21 +115,21 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: TXRXLPF1.out
+all: BACON.out
 
 # Tool invocations
-TXRXLPF1.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+BACON.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MSP430 Linker'
-	"C:/ti/ccsv5/tools/compiler/msp430/bin/cl430" -vmspx --abi=coffabi -O0 -g --define=__MSP430FG4616__ --diag_warning=225 --display_error_number --printf_support=minimal -z -m"TXRXLPF1.map" --stack_size=80 --heap_size=80 --use_hw_mpy=16 -i"C:/ti/ccsv5/ccs_base/msp430/include" -i"C:/ti/ccsv5/tools/compiler/msp430/lib" -i"C:/ti/ccsv5/tools/compiler/msp430/include" --reread_libs --warn_sections --rom_model -o "TXRXLPF1.out" $(ORDERED_OBJS)
+	"C:/ti/ccsv5/tools/compiler/msp430/bin/cl430" -vmspx --abi=coffabi -O0 -g --define=__MSP430FG4619__ --diag_warning=225 --display_error_number --printf_support=minimal -z -m"BACON.map" --stack_size=80 --heap_size=80 --use_hw_mpy=16 -i"C:/ti/ccsv5/ccs_base/msp430/include" -i"C:/ti/ccsv5/tools/compiler/msp430/lib" -i"C:/ti/ccsv5/tools/compiler/msp430/include" --reread_libs --warn_sections --rom_model -o "BACON.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(MSP430_EXECUTABLE_OUTPUTS__QUOTED) "TXRXLPF1.out"
-	-$(RM) "defaultprocessor.pp" "main.pp" "mma8451q.pp" "telitcomm.pp" "txrxlpfi2c.pp" 
-	-$(RM) "defaultprocessor.obj" "main.obj" "mma8451q.obj" "telitcomm.obj" "txrxlpfi2c.obj" 
+	-$(RM) $(MSP430_EXECUTABLE_OUTPUTS__QUOTED) "BACON.out"
+	-$(RM) "defaultprocessor.pp" "main.pp" "mma8451q.pp" "powermgmt.pp" "telitcomm.pp" "temp.pp" "txrxlpfi2c.pp" 
+	-$(RM) "defaultprocessor.obj" "main.obj" "mma8451q.obj" "powermgmt.obj" "telitcomm.obj" "temp.obj" "txrxlpfi2c.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

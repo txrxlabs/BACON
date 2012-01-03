@@ -26,6 +26,7 @@
 #include "msp430xG46x.h"
 #include "mma8451q.h"
 #include "txrxlpfi2c.h"
+#include "powermgmt.h"
 
 
 
@@ -48,22 +49,24 @@ void initMMA8451Q() {
 
 }
 
-void beginMMA8451Q () {
-
+void setActiveMMA8451Q (unsigned int state) {
 	unsigned char ctl1[] = {0x2A, 0x00};
 	writeI2C(0x1c, ctl1, 1, 0); //0x2E 0100 0000  40
 	readI2C(0x1c, &(ctl1[1]) , 1, 1);
-	ctl1[1] |= 0x01;
+	if(state) ctl1[1] |= 0x01;
+	else ctl1[1] &= 0xFE;
 	writeI2C(0x1c,ctl1, 2, 1);
 }
 unsigned char mma8451qVector(void) {
 	return LPM3_bits;
 }
+
 void executeMMA8451Q(unsigned char* buffer, unsigned int length) {
 	enableI2C(12);
+	setPwrBusStatus(PM_SYSPWR, PM_ENABLE);
 	initMMA8451Q();
 	attachInterrupt(mma8451qVector, 1,6, 1);
-	beginMMA8451Q();
+	setActiveMMA8451Q(1);
 	LPM3;
 	detachInterrupt(1,6);
 	unsigned char statreg[2] = {0x00, 0x01};
@@ -71,7 +74,9 @@ void executeMMA8451Q(unsigned char* buffer, unsigned int length) {
 	readI2C(0x1c, statreg , 1, 1);
 	writeI2C(0x1c, statreg+1, 1, 0);
 	readI2C(0x1c, buffer , 96, 1);
+	setActiveMMA8451Q(0);
 	disableI2C();
+	setPwrBusStatus(PM_SYSPWR, PM_DISABLE);
 	return;
 }
 

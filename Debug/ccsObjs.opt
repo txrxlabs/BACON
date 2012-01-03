@@ -1,1 +1,1 @@
-"./txrxlpfi2c.obj" "./telitcomm.obj" "./mma8451q.obj" "./main.obj" "./defaultprocessor.obj" -l"libc.a" "../lnk_msp430fg4616.cmd" 
+"./txrxlpfi2c.obj" "./temp.obj" "./telitcomm.obj" "./powermgmt.obj" "./mma8451q.obj" "./main.obj" "./defaultprocessor.obj" -l"libc.a" "../lnk_msp430fg4619.cmd" 

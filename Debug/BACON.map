@@ -1,0 +1,943 @@
+******************************************************************************
+                  MSP430 Linker PC v4.0.0                      
+******************************************************************************
+>> Linked Sun Jan 01 19:45:39 2012
+
+OUTPUT FILE NAME:   <BACON.out>
+ENTRY POINT SYMBOL: "_c_int00"  address: 0000241c
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  SFR                   00000000   00000010  00000000  00000010  RWIX
+  PERIPHERALS_8BIT      00000010   000000f0  00000000  000000f0  RWIX
+  PERIPHERALS_16BIT     00000100   00000100  00000000  00000100  RWIX
+  INFOB                 00001000   00000080  00000000  00000080  RWIX
+  INFOA                 00001080   00000080  00000000  00000080  RWIX
+  RAM                   00001100   00001000  00000a13  000005ed  RWIX
+  FLASH                 00002100   0000dec0  00001389  0000cb37  RWIX
+  INT00                 0000ffc0   00000002  00000000  00000002  RWIX
+  INT01                 0000ffc2   00000002  00000000  00000002  RWIX
+  INT02                 0000ffc4   00000002  00000000  00000002  RWIX
+  INT03                 0000ffc6   00000002  00000000  00000002  RWIX
+  INT04                 0000ffc8   00000002  00000000  00000002  RWIX
+  INT05                 0000ffca   00000002  00000000  00000002  RWIX
+  INT06                 0000ffcc   00000002  00000000  00000002  RWIX
+  INT07                 0000ffce   00000002  00000000  00000002  RWIX
+  INT08                 0000ffd0   00000002  00000000  00000002  RWIX
+  INT09                 0000ffd2   00000002  00000000  00000002  RWIX
+  INT10                 0000ffd4   00000002  00000000  00000002  RWIX
+  INT11                 0000ffd6   00000002  00000000  00000002  RWIX
+  INT12                 0000ffd8   00000002  00000000  00000002  RWIX
+  INT13                 0000ffda   00000002  00000000  00000002  RWIX
+  INT14                 0000ffdc   00000002  00000000  00000002  RWIX
+  INT15                 0000ffde   00000002  00000000  00000002  RWIX
+  INT16                 0000ffe0   00000002  00000002  00000000  RWIX
+  INT17                 0000ffe2   00000002  00000002  00000000  RWIX
+  INT18                 0000ffe4   00000002  00000000  00000002  RWIX
+  INT19                 0000ffe6   00000002  00000000  00000002  RWIX
+  INT20                 0000ffe8   00000002  00000002  00000000  RWIX
+  INT21                 0000ffea   00000002  00000000  00000002  RWIX
+  INT22                 0000ffec   00000002  00000000  00000002  RWIX
+  INT23                 0000ffee   00000002  00000002  00000000  RWIX
+  INT24                 0000fff0   00000002  00000000  00000002  RWIX
+  INT25                 0000fff2   00000002  00000002  00000000  RWIX
+  INT26                 0000fff4   00000002  00000000  00000002  RWIX
+  INT27                 0000fff6   00000002  00000000  00000002  RWIX
+  INT28                 0000fff8   00000002  00000000  00000002  RWIX
+  INT29                 0000fffa   00000002  00000000  00000002  RWIX
+  INT30                 0000fffc   00000002  00000000  00000002  RWIX
+  RESET                 0000fffe   00000002  00000002  00000000  RWIX
+  FLASH2                00010000   00010000  00000000  00010000  RWIX
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.pinit     0    00002100    00000000     UNINITIALIZED
+
+.bss       0    00001100    000009c3     UNINITIALIZED
+                  00001100    0000084c     main.obj (.bss)
+                  0000194c    0000014c     telitcomm.obj (.bss)
+                  00001a98    0000000c     defaultprocessor.obj (.bss)
+                  00001aa4    0000000c     mma8451q.obj (.bss)
+                  00001ab0    00000008     rts430x.lib : _lock.obj (.bss)
+                  00001ab8    00000008                 : boot.obj (.bss)
+                  00001ac0    00000003     powermgmt.obj (.bss)
+
+.stack     0    000020b0    00000050     UNINITIALIZED
+                  000020b0    00000002     rts430x.lib : boot.obj (.stack)
+                  000020b2    0000004e     --HOLE--
+
+.cinit     0    00002100    00000216     
+                  00002100    000001aa     telitcomm.obj (.cinit)
+                  000022aa    00000024     main.obj (.cinit)
+                  000022ce    00000024     mma8451q.obj (.cinit)
+                  000022f2    00000011     powermgmt.obj (.cinit)
+                  00002303    00000001     --HOLE-- [fill = 0]
+                  00002304    00000010     defaultprocessor.obj (.cinit)
+                  00002314    00000002     --HOLE-- [fill = 0]
+
+.text:_isr 
+*          0    00002316    00000150     
+                  00002316    00000058     main.obj (.text:_isr:basic_timer)
+                  0000236e    0000003e     main.obj (.text:_isr:Port_1)
+                  000023ac    0000003e     main.obj (.text:_isr:Port_2)
+                  000023ea    00000032     powermgmt.obj (.text:_isr:ADC12_ISR)
+                  0000241c    0000002a     rts430x.lib : boot.obj (.text:_isr:_c_int00_noexit)
+                  00002446    00000020     telitcomm.obj (.text:_isr:USCIA0RX_ISR)
+
+.text      0    00002466    00000ed2     
+                  00002466    0000010a     rts430x.lib : _printfi_min.obj (.text:_setfield)
+                  00002570    000000c0                 : _printfi_min.obj (.text:_printfi_minimal)
+                  00002630    0000009e     telitcomm.obj (.text:sendData)
+                  000026ce    00000098     mma8451q.obj (.text:executeMMA8451Q)
+                  00002766    00000080     main.obj (.text:attachInterrupt)
+                  000027e6    00000074     telitcomm.obj (.text:do_power)
+                  0000285a    00000074     main.obj (.text:initialize)
+                  000028ce    0000006a     main.obj (.text:logBattVal)
+                  00002938    00000066     telitcomm.obj (.text:do_unpower)
+                  0000299e    00000062     mma8451q.obj (.text:initMMA8451Q)
+                  00002a00    0000005c     telitcomm.obj (.text:do_open)
+                  00002a5c    00000058     main.obj (.text:process_state)
+                  00002ab4    00000056     telitcomm.obj (.text:sendCmd)
+                  00002b0a    00000052     rts430x.lib : _printfi_min.obj (.text:_ltostr)
+                  00002b5c    00000050     telitcomm.obj (.text:getResponse)
+                  00002bac    0000004e     main.obj (.text:logError)
+                  00002bfa    0000004c     mma8451q.obj (.text:setActiveMMA8451Q)
+                  00002c46    0000004a     defaultprocessor.obj (.text:mma8451qProc)
+                  00002c90    00000048     txrxlpfi2c.obj (.text:readI2C)
+                  00002cd8    00000048     powermgmt.obj (.text:setPwrBusStatus)
+                  00002d20    00000046     rts430x.lib : autoinit.obj (.text:_auto_init)
+                  00002d66    00000044     telitcomm.obj (.text:gprsSend)
+                  00002daa    00000042     telitcomm.obj (.text:do_close)
+                  00002dec    00000042     telitcomm.obj (.text:do_reset)
+                  00002e2e    00000040     rts430x.lib : _printfi_min.obj (.text:_pproc_str)
+                  00002e6e    00000040     txrxlpfi2c.obj (.text:writeI2C)
+                  00002eae    0000003e     telitcomm.obj (.text:ackSGACT)
+                  00002eec    00000038     rts430x.lib : sprintf.obj (.text:sprintf)
+                  00002f24    00000036     main.obj (.text:getBuffer)
+                  00002f5a    00000034     main.obj (.text:detachInterrupt)
+                  00002f8e    00000034     main.obj (.text:executeProcs)
+                  00002fc2    0000002e     rts430x.lib : _printfi_min.obj (.text:_getarg_diouxp)
+                  00002ff0    0000002c                 : _printfi_min.obj (.text:_pproc_diouxp)
+                  0000301c    0000002a     telitcomm.obj (.text:do_init)
+                  00003046    00000028     txrxlpfi2c.obj (.text:enableI2C)
+                  0000306e    00000028     rts430x.lib : memccpy.obj (.text:memccpy)
+                  00003096    00000026     telitcomm.obj (.text:getRXBufferChar)
+                  000030bc    00000024     main.obj (.text:setTimeout)
+                  000030e0    00000022     telitcomm.obj (.text:gprsClose)
+                  00003102    00000022     main.obj (.text:main)
+                  00003124    00000022     powermgmt.obj (.text:manageBatt)
+                  00003146    00000022     powermgmt.obj (.text:measureBatt)
+                  00003168    00000020     telitcomm.obj (.text:ackSend)
+                  00003188    00000020     main.obj (.text:flushTransmission)
+                  000031a8    0000001c     main.obj (.text:clearTimeout)
+                  000031c4    0000001a     rts430x.lib : _printfi_min.obj (.text:_div)
+                  000031de    0000001a     telitcomm.obj (.text:memcmp)
+                  000031f8    00000018     rts430x.lib : sprintf.obj (.text:_outs)
+                  00003210    00000016                 : div16u.obj (.text)
+                  00003226    00000016                 : mult16_hw.obj (.text)
+                  0000323c    00000014     telitcomm.obj (.text:ackOK)
+                  00003250    00000014     telitcomm.obj (.text:ackSD)
+                  00003264    00000014     rts430x.lib : memset.obj (.text:memset)
+                  00003278    00000012                 : sprintf.obj (.text:_outc)
+                  0000328a    00000012     telitcomm.obj (.text:clearRXBuffer)
+                  0000329c    00000012     main.obj (.text:disablePeriodic)
+                  000032ae    00000012     rts430x.lib : memcpy.obj (.text:memcpy)
+                  000032c0    00000012                 : strlen.obj (.text:strlen)
+                  000032d2    00000010     main.obj (.text:enablePeriodic)
+                  000032e2    0000000e     main.obj (.text:configure_timer)
+                  000032f0    0000000e     telitcomm.obj (.text:isRXBufferEmpty)
+                  000032fe    0000000a     main.obj (.text:closeTransmission)
+                  00003308    0000000a     telitcomm.obj (.text:do_uninit)
+                  00003312    0000000a     rts430x.lib : lsl16.obj (.text)
+                  0000331c    00000006     txrxlpfi2c.obj (.text:disableI2C)
+                  00003322    00000006     mma8451q.obj (.text:mma8451qVector)
+                  00003328    00000004     rts430x.lib : pre_init.obj (.text:_system_pre_init)
+                  0000332c    00000004                 : exit.obj (.text:abort)
+                  00003330    00000004     telitcomm.obj (.text:ackNoOp)
+                  00003334    00000002     rts430x.lib : _lock.obj (.text:_nop)
+                  00003336    00000002     defaultprocessor.obj (.text:thermistorProc)
+
+.const     0    00003338    00000151     
+                  00003338    00000112     telitcomm.obj (.const:.string)
+                  0000344a    00000014     telitcomm.obj (.const:$P$T0$1)
+                  0000345e    00000014     rts430x.lib : _printfi_min.obj (.const:.string)
+                  00003472    00000008     telitcomm.obj (.const:$P$T1$2)
+                  0000347a    00000006     telitcomm.obj (.const:$P$T2$3)
+                  00003480    00000003     telitcomm.obj (.const:$P$T3$4)
+                  00003483    00000001     --HOLE-- [fill = 0]
+                  00003484    00000002     mma8451q.obj (.const:$P$T0$1)
+                  00003486    00000002     mma8451q.obj (.const:$P$T1$2)
+                  00003488    00000001     main.obj (.const)
+
+.int16     0    0000ffe0    00000002     
+                  0000ffe0    00000002     main.obj (.int16)
+
+.int17     0    0000ffe2    00000002     
+                  0000ffe2    00000002     main.obj (.int17)
+
+.int20     0    0000ffe8    00000002     
+                  0000ffe8    00000002     main.obj (.int20)
+
+.int23     0    0000ffee    00000002     
+                  0000ffee    00000002     powermgmt.obj (.int23)
+
+.int25     0    0000fff2    00000002     
+                  0000fff2    00000002     telitcomm.obj (.int25)
+
+.reset     0    0000fffe    00000002     
+                  0000fffe    00000002     rts430x.lib : boot.obj (.reset)
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+address    name
+--------   ----
+00001100   .bss
+ffffffff   .text
+000001a0   ADC12CTL0
+000001a2   ADC12CTL1
+000001a6   ADC12IE
+000001a4   ADC12IFG
+000001a8   ADC12IV
+00000080   ADC12MCTL0
+00000081   ADC12MCTL1
+0000008a   ADC12MCTL10
+0000008b   ADC12MCTL11
+0000008c   ADC12MCTL12
+0000008d   ADC12MCTL13
+0000008e   ADC12MCTL14
+0000008f   ADC12MCTL15
+00000082   ADC12MCTL2
+00000083   ADC12MCTL3
+00000084   ADC12MCTL4
+00000085   ADC12MCTL5
+00000086   ADC12MCTL6
+00000087   ADC12MCTL7
+00000088   ADC12MCTL8
+00000089   ADC12MCTL9
+00000140   ADC12MEM0
+00000142   ADC12MEM1
+00000154   ADC12MEM10
+00000156   ADC12MEM11
+00000158   ADC12MEM12
+0000015a   ADC12MEM13
+0000015c   ADC12MEM14
+0000015e   ADC12MEM15
+00000144   ADC12MEM2
+00000146   ADC12MEM3
+00000148   ADC12MEM4
+0000014a   ADC12MEM5
+0000014c   ADC12MEM6
+0000014e   ADC12MEM7
+00000150   ADC12MEM8
+00000152   ADC12MEM9
+000023ea   ADC12_ISR
+00000046   BTCNT1
+00000046   BTCNT12
+00000047   BTCNT2
+00000040   BTCTL
+0000332c   C$$EXIT
+00000059   CACTL1
+0000005a   CACTL2
+0000005b   CAPD
+000001c0   DAC12_0CTL
+000001c8   DAC12_0DAT
+000001c2   DAC12_1CTL
+000001ca   DAC12_1DAT
+000001d0   DMA0CTL
+000001d6   DMA0DA
+000001d6   DMA0DAL
+000001d2   DMA0SA
+000001d2   DMA0SAL
+000001da   DMA0SZ
+000001dc   DMA1CTL
+000001e2   DMA1DA
+000001e2   DMA1DAL
+000001de   DMA1SA
+000001de   DMA1SAL
+000001e6   DMA1SZ
+000001e8   DMA2CTL
+000001ee   DMA2DA
+000001ee   DMA2DAL
+000001ea   DMA2SA
+000001ea   DMA2SAL
+000001f2   DMA2SZ
+00000122   DMACTL0
+00000124   DMACTL1
+00000126   DMAIV
+00000128   FCTL1
+0000012a   FCTL2
+0000012c   FCTL3
+00000053   FLL_CTL0
+00000054   FLL_CTL1
+00000000   IE1
+00000001   IE2
+00000002   IFG1
+00000003   IFG2
+00003312   I_LSL
+00000090   LCDACTL
+000000ac   LCDAPCTL0
+000000ad   LCDAPCTL1
+000000ae   LCDAVCTL0
+000000af   LCDAVCTL1
+00000091   LCDM1
+0000009a   LCDM10
+0000009b   LCDM11
+0000009c   LCDM12
+0000009d   LCDM13
+0000009e   LCDM14
+0000009f   LCDM15
+000000a0   LCDM16
+000000a1   LCDM17
+000000a2   LCDM18
+000000a3   LCDM19
+00000092   LCDM2
+000000a4   LCDM20
+00000093   LCDM3
+00000094   LCDM4
+00000095   LCDM5
+00000096   LCDM6
+00000097   LCDM7
+00000098   LCDM8
+00000099   LCDM9
+00000134   MAC
+00000136   MACS
+00000005   ME2
+00000130   MPY
+00000132   MPYS
+000000c0   OA0CTL0
+000000c1   OA0CTL1
+000000c2   OA1CTL0
+000000c3   OA1CTL1
+000000c4   OA2CTL0
+000000c5   OA2CTL1
+00000138   OP2
+0000000d   P10DIR
+00000009   P10IN
+0000000b   P10OUT
+0000000f   P10SEL
+00000022   P1DIR
+00000025   P1IE
+00000024   P1IES
+00000023   P1IFG
+00000020   P1IN
+00000021   P1OUT
+00000026   P1SEL
+0000002a   P2DIR
+0000002d   P2IE
+0000002c   P2IES
+0000002b   P2IFG
+00000028   P2IN
+00000029   P2OUT
+0000002e   P2SEL
+0000001a   P3DIR
+00000018   P3IN
+00000019   P3OUT
+0000001b   P3SEL
+0000001e   P4DIR
+0000001c   P4IN
+0000001d   P4OUT
+0000001f   P4SEL
+00000032   P5DIR
+00000030   P5IN
+00000031   P5OUT
+00000033   P5SEL
+00000036   P6DIR
+00000034   P6IN
+00000035   P6OUT
+00000037   P6SEL
+0000003c   P7DIR
+00000038   P7IN
+0000003a   P7OUT
+0000003e   P7SEL
+0000003d   P8DIR
+00000039   P8IN
+0000003b   P8OUT
+0000003f   P8SEL
+0000000c   P9DIR
+00000008   P9IN
+0000000a   P9OUT
+0000000e   P9SEL
+0000003c   PADIR
+00000038   PAIN
+0000003a   PAOUT
+0000003e   PASEL
+0000000c   PBDIR
+00000008   PBIN
+0000000a   PBOUT
+0000000e   PBSEL
+0000236e   Port_1
+000023ac   Port_2
+0000013c   RESHI
+0000013a   RESLO
+00000041   RTCCTL
+0000004c   RTCDATE
+0000004c   RTCDAY
+0000004d   RTCMON
+00000042   RTCNT1
+00000043   RTCNT2
+00000044   RTCNT3
+00000045   RTCNT4
+00000042   RTCTIM0
+00000044   RTCTIM1
+00000040   RTCTL
+0000004e   RTCYEAR
+0000004f   RTCYEARH
+0000004e   RTCYEARL
+00000050   SCFI0
+00000051   SCFI1
+00000052   SCFQCTL
+0000013e   SUMEXT
+00000056   SVSCTL
+00000172   TACCR0
+00000174   TACCR1
+00000176   TACCR2
+00000162   TACCTL0
+00000164   TACCTL1
+00000166   TACCTL2
+00000160   TACTL
+0000012e   TAIV
+00000170   TAR
+00000192   TBCCR0
+00000194   TBCCR1
+00000196   TBCCR2
+00000198   TBCCR3
+0000019a   TBCCR4
+0000019c   TBCCR5
+0000019e   TBCCR6
+00000182   TBCCTL0
+00000184   TBCCTL1
+00000186   TBCCTL2
+00000188   TBCCTL3
+0000018a   TBCCTL4
+0000018c   TBCCTL5
+0000018e   TBCCTL6
+00000180   TBCTL
+0000011e   TBIV
+00000190   TBR
+0000007c   U1BR0
+0000007d   U1BR1
+00000078   U1CTL
+0000007b   U1MCTL
+0000007a   U1RCTL
+0000007e   U1RXBUF
+00000079   U1TCTL
+0000007f   U1TXBUF
+0000005d   UCA0ABCTL
+00000062   UCA0BR0
+00000063   UCA0BR1
+00000060   UCA0CTL0
+00000061   UCA0CTL1
+0000005f   UCA0IRRCTL
+0000005e   UCA0IRTCTL
+00000064   UCA0MCTL
+00000066   UCA0RXBUF
+00000065   UCA0STAT
+00000067   UCA0TXBUF
+0000006a   UCB0BR0
+0000006b   UCB0BR1
+00000068   UCB0CTL0
+00000069   UCB0CTL1
+0000006c   UCB0I2CIE
+00000118   UCB0I2COA
+0000011a   UCB0I2CSA
+0000006e   UCB0RXBUF
+0000006d   UCB0STAT
+0000006f   UCB0TXBUF
+00002446   USCIA0RX_ISR
+00000120   WDTCTL
+00002100   __STACK_END
+00000050   __STACK_SIZE
+00000001   __TI_args_main
+00000001   __TI_auto_init
+00000001   __TI_exit
+ffffffff   __binit__
+00001100   __bss__
+ffffffff   __c_args__
+00002100   __cinit__
+00003210   __divu
+00001ac3   __end__
+ffffffff   __etext__
+00003226   __mpyi_hw
+ffffffff   __pinit__
+00003210   __remu
+ffffffff   __text__
+00002d20   _auto_init
+0000241c   _c_int00
+0000241c   _c_int00_noexit
+00001ab8   _cleanup_ptr
+00001abc   _dtors_ptr
+00001ab0   _lock
+00003334   _nop
+00002570   _printfi_minimal
+0000fffe   _reset_vector
+000020b0   _stack
+00003328   _system_pre_init
+00001ab4   _unlock
+0000332c   abort
+00003330   ackNoOp
+0000323c   ackOK
+00003250   ackSD
+00002eae   ackSGACT
+00003168   ackSend
+00002766   attachInterrupt
+00002316   basic_timer
+00001ac2   battState
+ffffffff   binit
+00002100   cinit
+0000328a   clearRXBuffer
+000031a8   clearTimeout
+000032fe   closeTransmission
+000032e2   configure_timer
+0000194a   control_state
+0000110a   dataBuffer
+00001908   dataPntr
+00002f5a   detachInterrupt
+0000331c   disableI2C
+0000329c   disablePeriodic
+00002daa   do_close
+0000301c   do_init
+00002a00   do_open
+000027e6   do_power
+00002dec   do_reset
+00003308   do_uninit
+00002938   do_unpower
+00003046   enableI2C
+000032d2   enablePeriodic
+00001ac3   end
+ffffffff   etext
+000026ce   executeMMA8451Q
+00002f8e   executeProcs
+00003188   flushTransmission
+00002f24   getBuffer
+00003096   getRXBufferChar
+00002b5c   getResponse
+000030e0   gprsClose
+00002d66   gprsSend
+00001996   gprs_state
+0000299e   initMMA8451Q
+0000285a   initialize
+000032f0   isRXBufferEmpty
+000028ce   logBattVal
+00002bac   logError
+00003102   main
+00003124   manageBatt
+00003146   measureBatt
+0000306e   memccpy
+000031de   memcmp
+000032ae   memcpy
+00003264   memset
+00002c46   mma8451qProc
+00003322   mma8451qVector
+ffffffff   pinit
+00001a98   procMap
+00002a5c   process_state
+00002c90   readI2C
+00001aa8   sctl1
+00001aaa   sctl2
+00001aac   sctl4
+00001aae   sctl5
+00001100   second_intervals
+00002ab4   sendCmd
+00002630   sendData
+00002bfa   setActiveMMA8451Q
+00002cd8   setPwrBusStatus
+000030bc   setTimeout
+00001aa4   smode
+00002eec   sprintf
+00001aa6   srnge
+00001ac0   srvHold
+000032c0   strlen
+00001ac1   sysHold
+00003336   thermistorProc
+00001106   timedout
+00001104   timeout
+00001108   timeout_intervals
+00001102   timermode
+00001974   ucRXBuffer
+00001995   ucReadIndex
+00001994   ucWriteIndex
+0000190a   vectorMap
+00002e6e   writeI2C
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+address    name
+--------   ----
+00000000   IE1
+00000001   IE2
+00000001   __TI_args_main
+00000001   __TI_auto_init
+00000001   __TI_exit
+00000002   IFG1
+00000003   IFG2
+00000005   ME2
+00000008   P9IN
+00000008   PBIN
+00000009   P10IN
+0000000a   P9OUT
+0000000a   PBOUT
+0000000b   P10OUT
+0000000c   P9DIR
+0000000c   PBDIR
+0000000d   P10DIR
+0000000e   P9SEL
+0000000e   PBSEL
+0000000f   P10SEL
+00000018   P3IN
+00000019   P3OUT
+0000001a   P3DIR
+0000001b   P3SEL
+0000001c   P4IN
+0000001d   P4OUT
+0000001e   P4DIR
+0000001f   P4SEL
+00000020   P1IN
+00000021   P1OUT
+00000022   P1DIR
+00000023   P1IFG
+00000024   P1IES
+00000025   P1IE
+00000026   P1SEL
+00000028   P2IN
+00000029   P2OUT
+0000002a   P2DIR
+0000002b   P2IFG
+0000002c   P2IES
+0000002d   P2IE
+0000002e   P2SEL
+00000030   P5IN
+00000031   P5OUT
+00000032   P5DIR
+00000033   P5SEL
+00000034   P6IN
+00000035   P6OUT
+00000036   P6DIR
+00000037   P6SEL
+00000038   P7IN
+00000038   PAIN
+00000039   P8IN
+0000003a   P7OUT
+0000003a   PAOUT
+0000003b   P8OUT
+0000003c   P7DIR
+0000003c   PADIR
+0000003d   P8DIR
+0000003e   P7SEL
+0000003e   PASEL
+0000003f   P8SEL
+00000040   BTCTL
+00000040   RTCTL
+00000041   RTCCTL
+00000042   RTCNT1
+00000042   RTCTIM0
+00000043   RTCNT2
+00000044   RTCNT3
+00000044   RTCTIM1
+00000045   RTCNT4
+00000046   BTCNT1
+00000046   BTCNT12
+00000047   BTCNT2
+0000004c   RTCDATE
+0000004c   RTCDAY
+0000004d   RTCMON
+0000004e   RTCYEAR
+0000004e   RTCYEARL
+0000004f   RTCYEARH
+00000050   SCFI0
+00000050   __STACK_SIZE
+00000051   SCFI1
+00000052   SCFQCTL
+00000053   FLL_CTL0
+00000054   FLL_CTL1
+00000056   SVSCTL
+00000059   CACTL1
+0000005a   CACTL2
+0000005b   CAPD
+0000005d   UCA0ABCTL
+0000005e   UCA0IRTCTL
+0000005f   UCA0IRRCTL
+00000060   UCA0CTL0
+00000061   UCA0CTL1
+00000062   UCA0BR0
+00000063   UCA0BR1
+00000064   UCA0MCTL
+00000065   UCA0STAT
+00000066   UCA0RXBUF
+00000067   UCA0TXBUF
+00000068   UCB0CTL0
+00000069   UCB0CTL1
+0000006a   UCB0BR0
+0000006b   UCB0BR1
+0000006c   UCB0I2CIE
+0000006d   UCB0STAT
+0000006e   UCB0RXBUF
+0000006f   UCB0TXBUF
+00000078   U1CTL
+00000079   U1TCTL
+0000007a   U1RCTL
+0000007b   U1MCTL
+0000007c   U1BR0
+0000007d   U1BR1
+0000007e   U1RXBUF
+0000007f   U1TXBUF
+00000080   ADC12MCTL0
+00000081   ADC12MCTL1
+00000082   ADC12MCTL2
+00000083   ADC12MCTL3
+00000084   ADC12MCTL4
+00000085   ADC12MCTL5
+00000086   ADC12MCTL6
+00000087   ADC12MCTL7
+00000088   ADC12MCTL8
+00000089   ADC12MCTL9
+0000008a   ADC12MCTL10
+0000008b   ADC12MCTL11
+0000008c   ADC12MCTL12
+0000008d   ADC12MCTL13
+0000008e   ADC12MCTL14
+0000008f   ADC12MCTL15
+00000090   LCDACTL
+00000091   LCDM1
+00000092   LCDM2
+00000093   LCDM3
+00000094   LCDM4
+00000095   LCDM5
+00000096   LCDM6
+00000097   LCDM7
+00000098   LCDM8
+00000099   LCDM9
+0000009a   LCDM10
+0000009b   LCDM11
+0000009c   LCDM12
+0000009d   LCDM13
+0000009e   LCDM14
+0000009f   LCDM15
+000000a0   LCDM16
+000000a1   LCDM17
+000000a2   LCDM18
+000000a3   LCDM19
+000000a4   LCDM20
+000000ac   LCDAPCTL0
+000000ad   LCDAPCTL1
+000000ae   LCDAVCTL0
+000000af   LCDAVCTL1
+000000c0   OA0CTL0
+000000c1   OA0CTL1
+000000c2   OA1CTL0
+000000c3   OA1CTL1
+000000c4   OA2CTL0
+000000c5   OA2CTL1
+00000118   UCB0I2COA
+0000011a   UCB0I2CSA
+0000011e   TBIV
+00000120   WDTCTL
+00000122   DMACTL0
+00000124   DMACTL1
+00000126   DMAIV
+00000128   FCTL1
+0000012a   FCTL2
+0000012c   FCTL3
+0000012e   TAIV
+00000130   MPY
+00000132   MPYS
+00000134   MAC
+00000136   MACS
+00000138   OP2
+0000013a   RESLO
+0000013c   RESHI
+0000013e   SUMEXT
+00000140   ADC12MEM0
+00000142   ADC12MEM1
+00000144   ADC12MEM2
+00000146   ADC12MEM3
+00000148   ADC12MEM4
+0000014a   ADC12MEM5
+0000014c   ADC12MEM6
+0000014e   ADC12MEM7
+00000150   ADC12MEM8
+00000152   ADC12MEM9
+00000154   ADC12MEM10
+00000156   ADC12MEM11
+00000158   ADC12MEM12
+0000015a   ADC12MEM13
+0000015c   ADC12MEM14
+0000015e   ADC12MEM15
+00000160   TACTL
+00000162   TACCTL0
+00000164   TACCTL1
+00000166   TACCTL2
+00000170   TAR
+00000172   TACCR0
+00000174   TACCR1
+00000176   TACCR2
+00000180   TBCTL
+00000182   TBCCTL0
+00000184   TBCCTL1
+00000186   TBCCTL2
+00000188   TBCCTL3
+0000018a   TBCCTL4
+0000018c   TBCCTL5
+0000018e   TBCCTL6
+00000190   TBR
+00000192   TBCCR0
+00000194   TBCCR1
+00000196   TBCCR2
+00000198   TBCCR3
+0000019a   TBCCR4
+0000019c   TBCCR5
+0000019e   TBCCR6
+000001a0   ADC12CTL0
+000001a2   ADC12CTL1
+000001a4   ADC12IFG
+000001a6   ADC12IE
+000001a8   ADC12IV
+000001c0   DAC12_0CTL
+000001c2   DAC12_1CTL
+000001c8   DAC12_0DAT
+000001ca   DAC12_1DAT
+000001d0   DMA0CTL
+000001d2   DMA0SA
+000001d2   DMA0SAL
+000001d6   DMA0DA
+000001d6   DMA0DAL
+000001da   DMA0SZ
+000001dc   DMA1CTL
+000001de   DMA1SA
+000001de   DMA1SAL
+000001e2   DMA1DA
+000001e2   DMA1DAL
+000001e6   DMA1SZ
+000001e8   DMA2CTL
+000001ea   DMA2SA
+000001ea   DMA2SAL
+000001ee   DMA2DA
+000001ee   DMA2DAL
+000001f2   DMA2SZ
+00001100   .bss
+00001100   __bss__
+00001100   second_intervals
+00001102   timermode
+00001104   timeout
+00001106   timedout
+00001108   timeout_intervals
+0000110a   dataBuffer
+00001908   dataPntr
+0000190a   vectorMap
+0000194a   control_state
+00001974   ucRXBuffer
+00001994   ucWriteIndex
+00001995   ucReadIndex
+00001996   gprs_state
+00001a98   procMap
+00001aa4   smode
+00001aa6   srnge
+00001aa8   sctl1
+00001aaa   sctl2
+00001aac   sctl4
+00001aae   sctl5
+00001ab0   _lock
+00001ab4   _unlock
+00001ab8   _cleanup_ptr
+00001abc   _dtors_ptr
+00001ac0   srvHold
+00001ac1   sysHold
+00001ac2   battState
+00001ac3   __end__
+00001ac3   end
+000020b0   _stack
+00002100   __STACK_END
+00002100   __cinit__
+00002100   cinit
+00002316   basic_timer
+0000236e   Port_1
+000023ac   Port_2
+000023ea   ADC12_ISR
+0000241c   _c_int00
+0000241c   _c_int00_noexit
+00002446   USCIA0RX_ISR
+00002570   _printfi_minimal
+00002630   sendData
+000026ce   executeMMA8451Q
+00002766   attachInterrupt
+000027e6   do_power
+0000285a   initialize
+000028ce   logBattVal
+00002938   do_unpower
+0000299e   initMMA8451Q
+00002a00   do_open
+00002a5c   process_state
+00002ab4   sendCmd
+00002b5c   getResponse
+00002bac   logError
+00002bfa   setActiveMMA8451Q
+00002c46   mma8451qProc
+00002c90   readI2C
+00002cd8   setPwrBusStatus
+00002d20   _auto_init
+00002d66   gprsSend
+00002daa   do_close
+00002dec   do_reset
+00002e6e   writeI2C
+00002eae   ackSGACT
+00002eec   sprintf
+00002f24   getBuffer
+00002f5a   detachInterrupt
+00002f8e   executeProcs
+0000301c   do_init
+00003046   enableI2C
+0000306e   memccpy
+00003096   getRXBufferChar
+000030bc   setTimeout
+000030e0   gprsClose
+00003102   main
+00003124   manageBatt
+00003146   measureBatt
+00003168   ackSend
+00003188   flushTransmission
+000031a8   clearTimeout
+000031de   memcmp
+00003210   __divu
+00003210   __remu
+00003226   __mpyi_hw
+0000323c   ackOK
+00003250   ackSD
+00003264   memset
+0000328a   clearRXBuffer
+0000329c   disablePeriodic
+000032ae   memcpy
+000032c0   strlen
+000032d2   enablePeriodic
+000032e2   configure_timer
+000032f0   isRXBufferEmpty
+000032fe   closeTransmission
+00003308   do_uninit
+00003312   I_LSL
+0000331c   disableI2C
+00003322   mma8451qVector
+00003328   _system_pre_init
+0000332c   C$$EXIT
+0000332c   abort
+00003330   ackNoOp
+00003334   _nop
+00003336   thermistorProc
+0000fffe   _reset_vector
+ffffffff   .text
+ffffffff   __binit__
+ffffffff   __c_args__
+ffffffff   __etext__
+ffffffff   __pinit__
+ffffffff   __text__
+ffffffff   binit
+ffffffff   etext
+ffffffff   pinit
+
+[367 symbols]

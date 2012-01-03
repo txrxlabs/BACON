@@ -10,7 +10,7 @@
 
 #define RLY1  BIT6
 #define TRANSMIT_BUFFER_SIZE 2046
-#define PULSE_LENGTH 20 // pulse length in seconds
+#define PULSE_LENGTH 15 // pulse length in seconds
 
 #define     Bitime_5              0x05*4                      // ~ 0.5 bit length + small adjustment
 #define     Bitime                13*4//0x0D
@@ -41,6 +41,10 @@ void executeProcs(void);
 void configure_timer(void);
 void initialize(void);
 void enableSensors();
+void setTimeout(unsigned int time);
+void clearTimeout();
+void enablePeriodic();
+void disablePeriodic();
 
 
 #endif /* TXRXLPF_H_ */
