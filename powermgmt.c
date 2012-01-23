@@ -3,7 +3,7 @@
 #include "txrxlpf.h"
 unsigned char srvHold = 0;
 unsigned char sysHold = 0;
-
+volatile unsigned int batVal = 0;
 volatile unsigned char battState = 0;
 void setPwrBusStatus(unsigned char bus, unsigned char state) {
 	unsigned char *count;
@@ -41,7 +41,7 @@ void measureBatt() {
 	__interrupt void ADC12_ISR(void)
 	{
 
-	unsigned int batVal = 0;
+		__no_operation();
 	batVal = ADC12MEM0;
 	__no_operation();
 	 if(ADC12MEM0> 4096) battState =2;

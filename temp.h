@@ -9,5 +9,7 @@
 #define TEMP_H_
 
 
+void executeTemp(unsigned char* buffer, unsigned int length);
+
 
 #endif /* TEMP_H_ */
