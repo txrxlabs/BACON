@@ -24,7 +24,7 @@ void mma8451qProc(proc_struct_t proc_struct) {
 	buff[8] = 0x00;
 	buff[9] = 0x60;
 
-	executeMMA8451Q(buff+10, 96);
+	//executeMMA8451Q(buff+10, 96);
 	return;
 
 }
@@ -41,7 +41,7 @@ void thermistorProc(proc_struct_t proc_struct) {
 		buff[7] = 0x00;
 		buff[8] = 0x00;
 		buff[9] = 0x04;
-		executeTemp(buff+10, 1);
+	//	executeTemp(buff+10, 1);
 		return;
 }
 

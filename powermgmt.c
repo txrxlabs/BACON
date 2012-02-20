@@ -28,14 +28,19 @@ void setPwrBusStatus(unsigned char bus, unsigned char state) {
 	}
 
 }
+
 void measureBatt() {
+	P8SEL &= 0xBF;
+	P8OUT |= 0x40;
+	P8DIR |= 0x40;
 	ADC12CTL0 = SHT0_2 + ADC12ON;             // Sampling time, ADC12 on
 	ADC12CTL1 = SHP;                          // Use sampling timer
 	ADC12IE = 0x01;                           // Enable interrupt
 	ADC12CTL0 |= ENC;
 	P6SEL |= 0x01;                            // P6.0 ADC option select
-   ADC12CTL0 |= ADC12SC;                   // Start sampling/conversion
+    ADC12CTL0 |= ADC12SC;                   // Start sampling/conversion
 	__bis_SR_register(LPM0_bits + GIE);     // LPM0, ADC12_ISR will force exit
+	P8DIR &= 0xBF;
 }
 #pragma vector = ADC12_VECTOR
 	__interrupt void ADC12_ISR(void)
@@ -52,17 +57,23 @@ void measureBatt() {
 }
 unsigned char manageBatt(){
 	// disable solar charging
+	P8SEL &= 0x7F;
+	P8OUT |= 0x80;
+	P8DIR |= 0x80;
+
 	// pause to let system settle
 
 	__no_operation();
 	measureBatt();// take voltage reading of cell
 	__no_operation();
 	switch(battState) {
-	case 1:	// renable solar cell
+	case 1:
+		P8OUT &= 0x7F;
 		return BATT_LOW;// if cell is low return LOW_CELL
 	case 2:
 		return BATT_FULL;
 	default:
+		P8OUT &= 0x7F;
 		return BATT_CHRGNG; // if we are charging
 	}
 }
